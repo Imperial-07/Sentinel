@@ -1,9 +1,5 @@
 'use strict';
 
-/**
- * demo.js — run with `node Math/demo.js` to sanity check the math layer.
- * Not needed by the server; delete it whenever you like.
- */
 
 const Flood = require('./index');
 
