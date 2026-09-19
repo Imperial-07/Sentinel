@@ -1,24 +1,14 @@
 'use strict';
 
-/**
- * hydrology.js — the "vertical" water balance for a single region.
- *
- *   new depth = depth + rainfall - infiltration - drainage
- *
- * Everything here is a pure function of numbers, so it is trivially testable.
- */
+
 
 const { rateToDepth, clamp, safeDiv, secondsToHours } = require('./units');
 
-/** Depth of water (m) added by rain of `intensity` mm/hr over dt seconds. */
 function rainfallDepth(intensityMmPerHr, dtSeconds) {
   return rateToDepth(Math.max(0, intensityMmPerHr || 0), dtSeconds);
 }
 
-/**
- * Storm drains stop coping once the water is deep enough to surcharge them.
- * Returns a multiplier in [minEfficiency, 1] applied to drainage capacity.
- */
+
 function drainEfficiency(depthM, surchargeDepthM = 0.5, minEfficiency = 0.3) {
   if (!surchargeDepthM || surchargeDepthM <= 0) return 1;
   if (depthM <= surchargeDepthM) return 1;
@@ -26,27 +16,19 @@ function drainEfficiency(depthM, surchargeDepthM = 0.5, minEfficiency = 0.3) {
   return clamp(1 - 0.5 * overload, minEfficiency, 1);
 }
 
-/** Water removed by the drainage network (m). Never more than what is there. */
+
 function drainageDepth(capacityMmPerHr, dtSeconds, availableDepthM, efficiency = 1) {
   const capacity = rateToDepth(Math.max(0, capacityMmPerHr || 0), dtSeconds) * clamp(efficiency, 0, 1);
   return Math.min(capacity, Math.max(0, availableDepthM));
 }
 
-/**
- * Water soaking into the ground (m).
- * `saturation` in [0,1] — 0 = dry soil, 1 = fully saturated (no infiltration).
- */
+
 function infiltrationDepth(rateMmPerHr, dtSeconds, availableDepthM, saturation = 0) {
   const usable = rateToDepth(Math.max(0, rateMmPerHr || 0), dtSeconds) * (1 - clamp(saturation, 0, 1));
   return Math.min(usable, Math.max(0, availableDepthM));
 }
 
-/**
- * Full vertical balance for one region over one timestep.
- * Order matters: rain lands first, then infiltration and drainage act on it.
- *
- * @returns {{rain, infiltration, drainage, net, efficiency}} all depths in metres
- */
+
 function verticalBalance(region, intensityMmPerHr, dtSeconds) {
   const rain = rainfallDepth(intensityMmPerHr, dtSeconds);
   const afterRain = Math.max(0, region.waterLevel) + rain;
@@ -71,20 +53,11 @@ function verticalBalance(region, intensityMmPerHr, dtSeconds) {
   };
 }
 
-/* ------------------------------------------------------------------ */
-/* Rainfall time series                                                */
-/* ------------------------------------------------------------------ */
-
-/** Build a series from a plain hourly array: [12, 40, 55] -> [{t,intensity}...] */
 function fromHourlySeries(intensities) {
   return intensities.map((intensity, i) => ({ t: i * 3600, intensity }));
 }
 
-/**
- * Rainfall intensity (mm/hr) at time t, linearly interpolated between samples.
- * Holds the first/last value outside the series range.
- * @param {Array<{t:number,intensity:number}>} series sorted ascending by t (seconds)
- */
+
 function rainfallAt(series, tSeconds) {
   if (typeof series === 'number') return series;
   if (!Array.isArray(series) || series.length === 0) return 0;
@@ -104,7 +77,6 @@ function rainfallAt(series, tSeconds) {
   return last.intensity;
 }
 
-/** Total rainfall depth (mm) between two times — trapezoidal integration. */
 function totalRainfall(series, fromSeconds = 0, toSeconds = Infinity) {
   if (!Array.isArray(series) || series.length === 0) return 0;
   const end = Math.min(toSeconds, series[series.length - 1].t);
