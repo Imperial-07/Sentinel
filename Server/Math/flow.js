@@ -1,35 +1,19 @@
 'use strict';
 
-/**
- * flow.js — water moving sideways between connected regions.
- *
- * Model: each region is a storage cell holding a depth of water on top of its
- * terrain elevation. Water flows from high hydraulic head to low head across
- * the connection between two regions. This is the same idea as the storage-cell
- * approach used in LISFLOOD-FP, simplified for a real-time dashboard.
- */
 
 const { clamp, safeDiv, sign, volumeToDepth, EPS } = require('./units');
 
-/** Hydraulic head (m): terrain elevation + water sitting on it. */
+
 function hydraulicHead(elevation, waterLevel) {
   return elevation + Math.max(0, waterLevel);
 }
 
-/**
- * Depth of water actually available to flow across the boundary:
- * the higher water surface minus the higher of the two terrain levels.
- * If it is <= 0 the water is trapped behind terrain and nothing moves.
- */
+
 function effectiveFlowDepth(headA, headB, bedA, bedB) {
   return Math.max(0, Math.max(headA, headB) - Math.max(bedA, bedB));
 }
 
-/**
- * Manning's equation for a wide rectangular section:
- *   Q = (W / n) * h^(5/3) * sqrt(S)
- * @returns discharge in m^3/s, positive means A -> B
- */
+
 function manningFlux({ headA, headB, bedA, bedB, width = 100, length = 500, roughness = 0.035 }) {
   const dh = headA - headB;
   if (Math.abs(dh) < EPS) return 0;
@@ -42,20 +26,12 @@ function manningFlux({ headA, headB, bedA, bedB, width = 100, length = 500, roug
   return sign(dh) * q;
 }
 
-/**
- * Simpler alternative: flow proportional to head difference.
- * `conductance` is in m^2/s. Use this when you don't have widths/lengths.
- */
+
 function linearFlux({ headA, headB, conductance = 5 }) {
   return conductance * (headA - headB);
 }
 
-/**
- * Cap a transfer so the simulation stays stable:
- *  1. never move more than `relaxation` x the volume that would level the two
- *     regions out (stops water sloshing back and forth every step),
- *  2. never move more water than the donor actually has.
- */
+
 function limitTransfer(volumeM3, donor, receiver, headDiff, relaxation = 0.5) {
   const levelling = safeDiv(
     Math.abs(headDiff),
@@ -67,10 +43,7 @@ function limitTransfer(volumeM3, donor, receiver, headDiff, relaxation = 0.5) {
   return sign(volumeM3) * Math.max(0, capped);
 }
 
-/**
- * Turn `region.neighbors` into a de-duplicated edge list.
- * Accepts neighbors as ["R2"] or [{ id, width, length, roughness, conductance }].
- */
+
 function edgesFromRegions(regions) {
   const seen = new Set();
   const edges = [];
@@ -98,20 +71,14 @@ function edgesFromRegions(regions) {
   return edges;
 }
 
-/**
- * Compute every inter-region transfer for one timestep.
- *
- * @returns {{fluxes:Array, deltaDepth:Map<string,number>}}
- *   fluxes[i] = { from, to, discharge (m^3/s), volume (m^3) } positive = from -> to
- *   deltaDepth maps region id -> signed depth change (m) to apply this step
- */
+
 function computeExchanges(regions, edges, dtSeconds, options = {}) {
   const { model = 'manning', relaxation = 0.5, roughness = 0.035 } = options;
 
   const byId = new Map(regions.map((r) => [r.id, r]));
   const raw = [];
 
-  // Pass 1 — raw flux per edge, limited by head levelling and donor storage.
+
   for (const edge of edges) {
     const A = byId.get(edge.from);
     const B = byId.get(edge.to);
@@ -143,7 +110,7 @@ function computeExchanges(regions, edges, dtSeconds, options = {}) {
     raw.push({ from: edge.from, to: edge.to, donorId: donor.id, volume });
   }
 
-  // Pass 2 — a region with several neighbours must not drain more than it holds.
+  
   const outflow = new Map();
   for (const f of raw) {
     outflow.set(f.donorId, (outflow.get(f.donorId) || 0) + Math.abs(f.volume));
@@ -156,7 +123,7 @@ function computeExchanges(regions, edges, dtSeconds, options = {}) {
     scale.set(id, total > available ? safeDiv(available, total, 0) : 1);
   }
 
-  // Pass 3 — accumulate net depth change per region.
+ 
   const deltaDepth = new Map(regions.map((r) => [r.id, 0]));
   const fluxes = [];
 
