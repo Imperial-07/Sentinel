@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FlowShield</title>
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <!-- FlowShield CSS -->
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ==================================================
+         FULL SCREEN MAP
+    ================================================== -->
+
+    <div id="map"></div>
+
+
+    <!-- ==================================================
+         DARK MAP OVERLAY
+    ================================================== -->
+
+    <div class="map-overlay"></div>
+
+
+    <!-- ==================================================
+         FLOWSHIELD INTERFACE
+    ================================================== -->
+
+    <div class="hud">
+
+
+        <!-- ==================================================
+             TOP HEADER
+        ================================================== -->
+
+        <header class="top-bar">
+
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    <div class="brand-icon-inner"></div>
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        FLOWSHIELD
+                    </div>
+
+                    <div class="brand-subtitle">
+                        FLOOD INTELLIGENCE // EARLY WARNING SYSTEM
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="system-status">
+
+
+                <div class="status-item">
+
+                    <div class="status-label">
+                        SYSTEM
+                    </div>
+
+                    <div class="status-value online">
+
+                        <span class="online-dot"></span>
+
+                        ONLINE
+
+                    </div>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <div class="status-label">
+                        DATA STREAM
+                    </div>
+
+                    <div class="status-value online">
+                        ACTIVE
+                    </div>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <div class="status-label">
+                        SIMULATION HOUR
+                    </div>
+
+                    <div
+                        class="status-value"
+                        id="simulationHour"
+                    >
+                        00
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+        <!-- ==================================================
+             NAVIGATION
+        ================================================== -->
+
+        <nav class="navigation">
+
+
+            <button
+                class="nav-button"
+                data-tab="overview"
+            >
+                OVERVIEW
+            </button>
+
+
+            <button
+                class="nav-button"
+                data-tab="live-map"
+            >
+                LIVE MAP
+            </button>
+
+
+            <button
+                class="nav-button"
+                data-tab="rainfall"
+            >
+                RAINFALL
+            </button>
+
+
+            <button
+                class="nav-button"
+                data-tab="simulation"
+            >
+                SIMULATION
+            </button>
+
+
+            <button
+                class="nav-button"
+                data-tab="alerts"
+            >
+                ALERTS
+            </button>
+
+
+        </nav>
+
+
+        <!-- ==================================================
+             OVERVIEW
+        ================================================== -->
+
+        <section
+            class="tab-panel"
+            data-panel="overview"
+        >
+
+
+            <div class="overview-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ◉
+                    </div>
+
+                    <div class="stat-label">
+                        CURRENT RAINFALL
+                    </div>
+
+                    <div
+                        class="stat-value cyan"
+                        id="overviewRainfall"
+                    >
+                        9
+                    </div>
+
+                    <div class="stat-unit">
+                        mm / hr
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ≋
+                    </div>
+
+                    <div class="stat-label">
+                        RIVER LEVEL
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="overviewRiverLevel"
+                    >
+                        2.2
+                    </div>
+
+                    <div class="stat-unit">
+                        meters
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        △
+                    </div>
+
+                    <div class="stat-label">
+                        ACTIVE ZONES
+                    </div>
+
+                    <div
+                        class="stat-value yellow"
+                        id="overviewActiveZones"
+                    >
+                        2
+                    </div>
+
+                    <div class="stat-unit">
+                        regions
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        !
+                    </div>
+
+                    <div class="stat-label">
+                        CRITICAL
+                    </div>
+
+                    <div
+                        class="stat-value red"
+                        id="overviewCritical"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-unit">
+                        regions
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="overview-bottom">
+
+
+                <div class="overview-message">
+
+                    <div class="section-title">
+                        SYSTEM OVERVIEW
+                    </div>
+
+                    <h2 id="overviewRisk">
+                        WATCH
+                    </h2>
+
+                    <p id="overviewMessage">
+                        Monitoring basin conditions.
+                    </p>
+
+                </div>
+
+
+                <div class="system-card">
+
+                    <div class="section-title">
+                        SYSTEM STATUS
+                    </div>
+
+
+                    <div class="system-line">
+
+                        <span>
+                            Weather stream
+                        </span>
+
+                        <strong class="green">
+                            ● ACTIVE
+                        </strong>
+
+                    </div>
+
+
+                    <div class="system-line">
+
+                        <span>
+                            Flood engine
+                        </span>
+
+                        <strong class="green">
+                            ● READY
+                        </strong>
+
+                    </div>
+
+
+                    <div class="system-line">
+
+                        <span>
+                            Alert engine
+                        </span>
+
+                        <strong class="green">
+                            ● ACTIVE
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             LIVE MAP
+        ================================================== -->
+
+        <section
+            class="tab-panel"
+            data-panel="live-map"
+        >
+
+
+            <div class="map-info-panel">
+
+                <div>
+
+                    <div class="section-title">
+                        LIVE FLOOD MONITORING
+                    </div>
+
+                    <h2>
+                        Mithi River Basin
+                    </h2>
+
+                    <p>
+                        Select a monitoring zone on the map
+                        to inspect its current condition.
+                    </p>
+
+                </div>
+
+
+                <div class="live-indicator">
+                    ● LIVE
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             RAINFALL
+        ================================================== -->
+
+        <section
+            class="tab-panel"
+            data-panel="rainfall"
+        >
+
+
+            <div class="content-panel">
+
+
+                <div class="section-title">
+                    RAINFALL INTELLIGENCE
+                </div>
+
+
+                <h2>
+                    Monsoon rainfall intensity
+                </h2>
+
+
+                <div class="rainfall-main">
+
+
+                    <div class="rainfall-number">
+
+                        <div class="big-number">
+
+                            <span id="rainfallBigValue">
+                                9
+                            </span>
+
+                            <small>
+                                mm/h
+                            </small>
+
+                        </div>
+
+
+                        <p>
+                            Simulated rainfall intensity
+                            for the monitored basin.
+                        </p>
+
+                    </div>
+
+
+                    <div class="rainfall-control">
+
+                        <label>
+                            ADJUST RAINFALL
+                        </label>
+
+
+                        <input
+                            type="range"
+                            id="rainfallSlider"
+                            min="0"
+                            max="30"
+                            value="9"
+                            step="1"
+                        >
+
+
+                        <div class="slider-values">
+
+                            <span>
+                                0
+                            </span>
+
+                            <span>
+                                15
+                            </span>
+
+                            <span>
+                                30 mm/h
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="rainfall-bars">
+
+
+                    <div class="rain-row">
+
+                        <span>
+                            Mithi
+                        </span>
+
+                        <div class="bar">
+                            <div
+                                class="bar-fill"
+                                id="mithiBar"
+                            ></div>
+                        </div>
+
+                        <span id="mithiRainfall">
+                            9
+                        </span>
+
+                    </div>
+
+
+                    <div class="rain-row">
+
+                        <span>
+                            Powai
+                        </span>
+
+                        <div class="bar">
+                            <div
+                                class="bar-fill"
+                                id="powaiBar"
+                            ></div>
+                        </div>
+
+                        <span id="powaiRainfall">
+                            9
+                        </span>
+
+                    </div>
+
+
+                    <div class="rain-row">
+
+                        <span>
+                            Kurla
+                        </span>
+
+                        <div class="bar">
+                            <div
+                                class="bar-fill"
+                                id="kurlaBar"
+                            ></div>
+                        </div>
+
+                        <span id="kurlaRainfall">
+                            11
+                        </span>
+
+                    </div>
+
+
+                    <div class="rain-row">
+
+                        <span>
+                            Mahim
+                        </span>
+
+                        <div class="bar">
+                            <div
+                                class="bar-fill"
+                                id="mahimBar"
+                            ></div>
+                        </div>
+
+                        <span id="mahimRainfall">
+                            12
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             SIMULATION
+        ================================================== -->
+
+        <section
+            class="tab-panel"
+            data-panel="simulation"
+        >
+
+
+            <div class="simulation-grid">
+
+
+                <div class="content-panel">
+
+                    <div class="section-title">
+                        FLOOD SIMULATION ENGINE
+                    </div>
+
+
+                    <h2>
+                        Simulate flood dynamics
+                    </h2>
+
+
+                    <p>
+                        Increase rainfall intensity to observe
+                        how simulated flood risk changes
+                        across monitoring regions.
+                    </p>
+
+
+                    <div class="simulation-control">
+
+
+                        <div class="simulation-value">
+
+                            <span>
+                                RAINFALL
+                            </span>
+
+                            <strong id="simulationRainfall">
+                                9 mm/h
+                            </strong>
+
+                        </div>
+
+
+                        <input
+                            type="range"
+                            id="simulationSlider"
+                            min="0"
+                            max="30"
+                            value="9"
+                            step="1"
+                        >
+
+
+                    </div>
+
+
+                    <div class="simulation-buttons">
+
+
+                        <button
+                            class="primary-button"
+                            id="runSimulationBtn"
+                        >
+                            ▶ RUN SIMULATION
+                        </button>
+
+
+                        <button
+                            class="secondary-button"
+                            id="resetBtn"
+                        >
+                            ↻ RESET
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="simulation-result">
+
+
+                    <div class="section-title">
+                        PREDICTED CONDITION
+                    </div>
+
+
+                    <div
+                        class="simulation-risk"
+                        id="simulationRisk"
+                    >
+                        WATCH
+                    </div>
+
+
+                    <div class="prediction-line">
+
+                        <span>
+                            River level:
+                        </span>
+
+                        <strong id="simulationRiver">
+                            2.2 m
+                        </strong>
+
+                    </div>
+
+
+                    <div class="prediction-line">
+
+                        <span>
+                            Affected regions:
+                        </span>
+
+                        <strong id="simulationZones">
+                            2
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             ALERTS
+        ================================================== -->
+
+        <section
+            class="tab-panel"
+            data-panel="alerts"
+        >
+
+
+            <div class="content-panel alerts-page">
+
+
+                <div class="section-title">
+                    LIVE ALERTS
+                </div>
+
+
+                <h2>
+                    Flood warning events
+                </h2>
+
+
+                <div
+                    class="alerts-list"
+                    id="alertsList"
+                ></div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             REGION INSPECTOR
+        ================================================== -->
+
+        <aside
+            class="region-inspector"
+            id="regionInspector"
+        >
+
+
+            <button
+                class="close-button"
+                id="closeInspector"
+            >
+                ×
+            </button>
+
+
+            <div class="section-title">
+                REGION INSPECTOR
+            </div>
+
+
+            <h2 id="inspectorName">
+                Region
+            </h2>
+
+
+            <div
+                class="inspector-location"
+                id="inspectorLocation"
+            >
+                Mumbai
+            </div>
+
+
+            <div class="inspector-row">
+
+                <span>
+                    Rainfall
+                </span>
+
+                <strong id="inspectorRainfall">
+                    9 mm/h
+                </strong>
+
+            </div>
+
+
+            <div class="inspector-row">
+
+                <span>
+                    River level
+                </span>
+
+                <strong id="inspectorRiver">
+                    2.2 m
+                </strong>
+
+            </div>
+
+
+            <div class="inspector-row">
+
+                <span>
+                    Risk
+                </span>
+
+                <strong id="inspectorRisk">
+                    WATCH
+                </strong>
+
+            </div>
+
+
+            <div class="inspector-status">
+                ● LIVE DATA STREAM
+            </div>
+
+
+        </aside>
+
+
+        <!-- ==================================================
+             BOTTOM STATUS
+        ================================================== -->
+
+        <div class="bottom-status">
+
+            <span>
+                FLOW INTELLIGENCE
+            </span>
+
+            <span>
+                DATA STREAM ACTIVE
+            </span>
+
+            <span>
+                MUMBAI // MITHI BASIN
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==================================================
+         LEAFLET JAVASCRIPT
+    ================================================== -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    ></script>
+
+
+    <!-- ==================================================
+         FLOWSHIELD JAVASCRIPT
+    ================================================== -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
