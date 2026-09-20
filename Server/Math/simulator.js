@@ -122,9 +122,79 @@ function runSimulation(inputs = {}) {
     }
   }
 
+  // If this system is a Dam, compute dynamic reservoir mass-balance and spillway operations
+  let damMetrics = null;
+  if (basin.category === 'dam' && basin.damSpecs) {
+    const specs = basin.damSpecs;
+    const catchmentArea = basin.catchmentAreaKm2 || 50000;
+
+    // Inflow Qin (cusecs) scales with rainfall intensity and catchment size
+    const runOffCoeff = 0.45;
+    const baseInflow = specs.inflowCusecs || 15000;
+    const stormInflow = Math.round(rainfall * (catchmentArea * 0.05) * 8.5 * runOffCoeff);
+    const totalInflowCusecs = baseInflow + stormInflow;
+
+    // Mass balance: delta storage accumulated over storm hours
+    const effectiveHours = Math.max(1, hour);
+    const liveCap = specs.liveStorageMm3;
+    const frl = specs.frl;
+    const mddl = specs.mddl || (frl - 25);
+    const initialLevel = specs.currentLevel || (frl - 4);
+
+    // Rate of reservoir level rise
+    let currentLevel = initialLevel + (rainfall * 0.035 * Math.sqrt(effectiveHours));
+
+    let openGates = 0;
+    let totalOutflowCusecs = specs.outflowCusecs || 8000;
+    let damStatus = 'NORMAL';
+    let spillwayAlert = null;
+
+    if (currentLevel >= frl) {
+      currentLevel = frl + 0.15;
+      openGates = specs.gateCount;
+      totalOutflowCusecs = Math.round(totalInflowCusecs * 1.1);
+      damStatus = 'EMERGENCY_DISCHARGE';
+      spillwayAlert = `EMERGENCY: Reservoir at FRL (${frl}m). All ${openGates} gates open discharging ${totalOutflowCusecs.toLocaleString()} cusecs into downstream river!`;
+    } else if (currentLevel >= frl - 1.5) {
+      openGates = Math.max(1, Math.round(specs.gateCount * 0.7));
+      totalOutflowCusecs = Math.round(totalInflowCusecs * 0.95);
+      damStatus = 'CONTROLLED_SPILL';
+      spillwayAlert = `WARNING: Reservoir approaching FRL (${currentLevel.toFixed(2)}m / ${frl}m). ${openGates} of ${specs.gateCount} gates open discharging ${totalOutflowCusecs.toLocaleString()} cusecs.`;
+    } else if (currentLevel >= frl - 3.5 && rainfall > 25) {
+      openGates = Math.max(1, Math.round(specs.gateCount * 0.3));
+      totalOutflowCusecs = Math.round(totalInflowCusecs * 0.6);
+      damStatus = 'PRECAUTIONARY_DISCHARGE';
+      spillwayAlert = `ADVISORY: Advance flood moderation release. ${openGates} gates active discharging ${totalOutflowCusecs.toLocaleString()} cusecs.`;
+    }
+
+    const currentLiveStorageMm3 = Math.min(liveCap, Math.round(liveCap * ((currentLevel - mddl) / (frl - mddl))));
+    const liveStoragePercent = Math.min(100, Math.max(10, Math.round((currentLiveStorageMm3 / liveCap) * 100)));
+
+    damMetrics = {
+      isDam: true,
+      river: specs.river,
+      state: specs.state,
+      frl: specs.frl,
+      mddl: specs.mddl,
+      crestLevel: specs.crestLevel || specs.frl,
+      currentLevel: Number(currentLevel.toFixed(2)),
+      grossCapacityMm3: specs.grossCapacityMm3,
+      liveStorageMm3: currentLiveStorageMm3,
+      liveStoragePercent,
+      gateCount: specs.gateCount,
+      openGates,
+      inflowCusecs: totalInflowCusecs,
+      outflowCusecs: totalOutflowCusecs,
+      status: damStatus,
+      spillwayAlert,
+    };
+  }
+
   return {
     basinId: basin.id,
     basinName: basin.name,
+    category: basin.category || 'urban',
+    damMetrics,
     rainfall,
     simulationHour: hour,
     riverLevel,

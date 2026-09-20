@@ -107,9 +107,13 @@ window.addEventListener(
 let activeBasinId = "mithi";
 
 const BASINS_DATA = {
+    /* ==========================================
+       URBAN BASINS (MUMBAI MMR)
+    ========================================== */
     mithi: {
         id: "mithi",
         name: "Mithi River Catchment",
+        category: "urban",
         center: [19.076, 72.872],
         defaultZoom: 12,
         riverChannel: [
@@ -139,6 +143,7 @@ const BASINS_DATA = {
     ulhas: {
         id: "ulhas",
         name: "Ulhas River Basin",
+        category: "urban",
         center: [19.225, 73.115],
         defaultZoom: 11,
         riverChannel: [
@@ -163,6 +168,7 @@ const BASINS_DATA = {
     dahisar: {
         id: "dahisar",
         name: "Dahisar River Basin",
+        category: "urban",
         center: [19.245, 72.860],
         defaultZoom: 13,
         riverChannel: [
@@ -184,6 +190,7 @@ const BASINS_DATA = {
     oshiwara: {
         id: "oshiwara",
         name: "Oshiwara River Basin",
+        category: "urban",
         center: [19.145, 72.840],
         defaultZoom: 13,
         riverChannel: [
@@ -200,6 +207,314 @@ const BASINS_DATA = {
             { id: "oshiwara-link", name: "Oshiwara Link", lat: 19.1500, lng: 72.8360 },
             { id: "millat-nagar", name: "Millat Nagar", lat: 19.1380, lng: 72.8260 },
             { id: "versova-creek", name: "Versova Creek", lat: 19.1320, lng: 72.8120 }
+        ]
+    },
+
+    /* ==========================================
+       NATIONAL RIVER BASINS (INDIA)
+    ========================================== */
+    ganga: {
+        id: "ganga",
+        name: "Ganga River Basin",
+        category: "national_river",
+        center: [25.6127, 85.1444],
+        defaultZoom: 7,
+        riverChannel: [
+            [30.0869, 78.2676],
+            [29.9457, 78.1642],
+            [26.4499, 80.3319],
+            [25.4358, 81.8463],
+            [25.3176, 83.0062],
+            [25.6127, 85.1444],
+            [24.8016, 87.9257]
+        ],
+        regions: [
+            { id: "rishikesh", name: "Rishikesh", lat: 30.0869, lng: 78.2676 },
+            { id: "haridwar", name: "Haridwar", lat: 29.9457, lng: 78.1642 },
+            { id: "kanpur", name: "Kanpur", lat: 26.4499, lng: 80.3319 },
+            { id: "prayagraj", name: "Prayagraj Sangam", lat: 25.4358, lng: 81.8463 },
+            { id: "varanasi", name: "Varanasi Ghats", lat: 25.3176, lng: 83.0062 },
+            { id: "patna", name: "Patna", lat: 25.6127, lng: 85.1444 },
+            { id: "farakka", name: "Farakka Barrage", lat: 24.8016, lng: 87.9257 }
+        ]
+    },
+    brahmaputra: {
+        id: "brahmaputra",
+        name: "Brahmaputra River Basin",
+        category: "national_river",
+        center: [26.1856, 91.7476],
+        defaultZoom: 7,
+        riverChannel: [
+            [28.0664, 95.3268],
+            [27.4728, 94.9120],
+            [26.6528, 92.7926],
+            [26.1856, 91.7476],
+            [26.1786, 90.6277],
+            [26.0208, 89.9754]
+        ],
+        regions: [
+            { id: "pasighat", name: "Pasighat Entry", lat: 28.0664, lng: 95.3268 },
+            { id: "dibrugarh", name: "Dibrugarh Dykes", lat: 27.4728, lng: 94.9120 },
+            { id: "tezpur", name: "Tezpur", lat: 26.6528, lng: 92.7926 },
+            { id: "guwahati", name: "Guwahati Saraighat", lat: 26.1856, lng: 91.7476 },
+            { id: "goalpara", name: "Goalpara", lat: 26.1786, lng: 90.6277 },
+            { id: "dhubri", name: "Dhubri Delta Entry", lat: 26.0208, lng: 89.9754 }
+        ]
+    },
+    narmada: {
+        id: "narmada",
+        name: "Narmada River Basin",
+        category: "national_river",
+        center: [22.2500, 76.5000],
+        defaultZoom: 7,
+        riverChannel: [
+            [22.6734, 81.7588],
+            [23.1290, 79.8000],
+            [22.7533, 77.7249],
+            [22.2435, 76.1500],
+            [21.8322, 73.7489],
+            [21.7051, 72.9959]
+        ],
+        regions: [
+            { id: "amarkantak", name: "Amarkantak Source", lat: 22.6734, lng: 81.7588 },
+            { id: "jabalpur", name: "Jabalpur Bhedaghat", lat: 23.1290, lng: 79.8000 },
+            { id: "hoshangabad", name: "Narmadapuram Sethani", lat: 22.7533, lng: 77.7249 },
+            { id: "omkareshwar", name: "Omkareshwar", lat: 22.2435, lng: 76.1500 },
+            { id: "garudeshwar", name: "Garudeshwar Weir", lat: 21.8322, lng: 73.7489 },
+            { id: "bharuch", name: "Bharuch Golden Bridge", lat: 21.7051, lng: 72.9959 }
+        ]
+    },
+    godavari: {
+        id: "godavari",
+        name: "Godavari River Basin",
+        category: "national_river",
+        center: [18.9000, 78.5000],
+        defaultZoom: 7,
+        riverChannel: [
+            [19.9975, 73.7898],
+            [19.8821, 74.4789],
+            [19.1526, 77.3196],
+            [17.6688, 80.8936],
+            [16.9891, 81.7840]
+        ],
+        regions: [
+            { id: "nashik", name: "Nashik Ramkund", lat: 19.9975, lng: 73.7898 },
+            { id: "kopargaon", name: "Kopargaon Weir", lat: 19.8821, lng: 74.4789 },
+            { id: "nanded", name: "Nanded Sachkhand", lat: 19.1526, lng: 77.3196 },
+            { id: "bhadrachalam", name: "Bhadrachalam Temple", lat: 17.6688, lng: 80.8936 },
+            { id: "rajahmundry", name: "Rajahmundry Barrage", lat: 16.9891, lng: 81.7840 }
+        ]
+    },
+    krishna: {
+        id: "krishna",
+        name: "Krishna River Basin",
+        category: "national_river",
+        center: [16.5000, 76.5000],
+        defaultZoom: 7,
+        riverChannel: [
+            [17.9237, 73.6586],
+            [16.8524, 74.5815],
+            [16.3317, 75.8883],
+            [16.0886, 78.8970],
+            [16.5062, 80.6480]
+        ],
+        regions: [
+            { id: "mahabaleshwar", name: "Mahabaleshwar Source", lat: 17.9237, lng: 73.6586 },
+            { id: "sangli", name: "Sangli Irwin Bridge", lat: 16.8524, lng: 74.5815 },
+            { id: "almatti", name: "Almatti Tailrace", lat: 16.3317, lng: 75.8883 },
+            { id: "srisailam", name: "Srisailam Gorge", lat: 16.0886, lng: 78.8970 },
+            { id: "vijayawada", name: "Vijayawada Barrage", lat: 16.5062, lng: 80.6480 }
+        ]
+    },
+
+    /* ==========================================
+       MAJOR STRATEGIC DAMS & RESERVOIRS (INDIA)
+    ========================================== */
+    "sardar-sarovar": {
+        id: "sardar-sarovar",
+        name: "Sardar Sarovar Dam",
+        category: "dam",
+        center: [21.8322, 73.7489],
+        defaultZoom: 12,
+        damSpecs: {
+            river: "Narmada",
+            state: "Gujarat",
+            frl: 138.68,
+            mddl: 110.64,
+            currentLevel: 133.20,
+            grossCapacityMm3: 9500,
+            liveStorageMm3: 5800,
+            gateCount: 30
+        },
+        riverChannel: [
+            [21.8500, 73.8500],
+            [21.8322, 73.7489],
+            [21.8150, 73.6800],
+            [21.7800, 73.5500],
+            [21.7500, 73.3500],
+            [21.7051, 72.9959]
+        ],
+        regions: [
+            { id: "ss-reservoir", name: "Reservoir Deep Pool", lat: 21.8500, lng: 73.8500, isReservoir: true },
+            { id: "ss-spillway", name: "Main Spillway Chute", lat: 21.8322, lng: 73.7489, isSpillway: true },
+            { id: "garudeshwar-weir", name: "Garudeshwar Weir", lat: 21.8150, lng: 73.6800 },
+            { id: "tilakwada", name: "Tilakwada Ghat", lat: 21.7800, lng: 73.5500 },
+            { id: "bharuch-port", name: "Bharuch Vulnerable Delta", lat: 21.7051, lng: 72.9959 }
+        ]
+    },
+    "tehri-dam": {
+        id: "tehri-dam",
+        name: "Tehri Dam & Reservoir",
+        category: "dam",
+        center: [30.3781, 78.4806],
+        defaultZoom: 12,
+        damSpecs: {
+            river: "Bhagirathi",
+            state: "Uttarakhand",
+            frl: 830.0,
+            mddl: 740.0,
+            currentLevel: 818.5,
+            grossCapacityMm3: 3540,
+            liveStorageMm3: 2615,
+            gateCount: 4
+        },
+        riverChannel: [
+            [30.4200, 78.5300],
+            [30.3781, 78.4806],
+            [30.1458, 78.5989],
+            [30.0869, 78.2676],
+            [29.9457, 78.1642]
+        ],
+        regions: [
+            { id: "tehri-reservoir", name: "Tehri Lake Pool", lat: 30.4200, lng: 78.5300, isReservoir: true },
+            { id: "tehri-chute", name: "Chute Spillway Tailrace", lat: 30.3781, lng: 78.4806, isSpillway: true },
+            { id: "devprayag-sangam", name: "Devprayag Sangam", lat: 30.1458, lng: 78.5989 },
+            { id: "rishikesh-ghat", name: "Rishikesh Triveni Ghat", lat: 30.0869, lng: 78.2676 },
+            { id: "haridwar-bhimgoda", name: "Haridwar Bhimgoda Barrage", lat: 29.9457, lng: 78.1642 }
+        ]
+    },
+    "hirakud-dam": {
+        id: "hirakud-dam",
+        name: "Hirakud Dam & Reservoir",
+        category: "dam",
+        center: [21.5284, 83.8690],
+        defaultZoom: 12,
+        damSpecs: {
+            river: "Mahanadi",
+            state: "Odisha",
+            frl: 192.02,
+            mddl: 179.83,
+            currentLevel: 189.40,
+            grossCapacityMm3: 8136,
+            liveStorageMm3: 5378,
+            gateCount: 98
+        },
+        riverChannel: [
+            [21.5800, 83.7500],
+            [21.5284, 83.8690],
+            [21.4669, 83.9812],
+            [20.8400, 83.9100],
+            [20.4625, 85.8828]
+        ],
+        regions: [
+            { id: "hirakud-pool", name: "Hirakud Reservoir Pool", lat: 21.5800, lng: 83.7500, isReservoir: true },
+            { id: "hirakud-spillway", name: "Crest Spillway Gates", lat: 21.5284, lng: 83.8690, isSpillway: true },
+            { id: "sambalpur-ghat", name: "Sambalpur Ghats", lat: 21.4669, lng: 83.9812 },
+            { id: "sonepur", name: "Sonepur Tel Confluence", lat: 20.8400, lng: 83.9100 },
+            { id: "cuttack-naraj", name: "Cuttack Naraj Barrage", lat: 20.4625, lng: 85.8828 }
+        ]
+    },
+    "idukki-dam": {
+        id: "idukki-dam",
+        name: "Idukki Dam & Cheruthoni Spillway",
+        category: "dam",
+        center: [9.8499, 76.9725],
+        defaultZoom: 12,
+        damSpecs: {
+            river: "Periyar",
+            state: "Kerala",
+            frl: 732.43,
+            mddl: 700.00,
+            currentLevel: 724.80,
+            grossCapacityMm3: 1996,
+            liveStorageMm3: 1460,
+            gateCount: 5
+        },
+        riverChannel: [
+            [9.8600, 77.0200],
+            [9.8499, 76.9725],
+            [9.8750, 76.9200],
+            [10.1076, 76.3516],
+            [9.9816, 76.2999]
+        ],
+        regions: [
+            { id: "idukki-reservoir", name: "Idukki Arch Reservoir", lat: 9.8600, lng: 77.0200, isReservoir: true },
+            { id: "cheruthoni-spillway", name: "Cheruthoni 5-Radial Gates", lat: 9.8499, lng: 76.9725, isSpillway: true },
+            { id: "thadiyampadu", name: "Thadiyampadu Bridge", lat: 9.8750, lng: 76.9200 },
+            { id: "aluwa-manappuram", name: "Aluva Manappuram Ghat", lat: 10.1076, lng: 76.3516 },
+            { id: "kochi-backwaters", name: "Kochi Backwaters Estuary", lat: 9.9816, lng: 76.2999 }
+        ]
+    },
+    "koyna-dam": {
+        id: "koyna-dam",
+        name: "Koyna Dam & Shivajisagar",
+        category: "dam",
+        center: [17.4000, 73.7500],
+        defaultZoom: 12,
+        damSpecs: {
+            river: "Koyna / Krishna",
+            state: "Maharashtra",
+            frl: 657.91,
+            mddl: 610.00,
+            currentLevel: 651.20,
+            grossCapacityMm3: 2797,
+            liveStorageMm3: 2678,
+            gateCount: 6
+        },
+        riverChannel: [
+            [17.4800, 73.7200],
+            [17.4000, 73.7500],
+            [17.3800, 73.8500],
+            [17.2890, 74.1816],
+            [16.8524, 74.5815]
+        ],
+        regions: [
+            { id: "koyna-reservoir", name: "Shivajisagar Reservoir", lat: 17.4800, lng: 73.7200, isReservoir: true },
+            { id: "koyna-spillway", name: "Koyna 6-Radial Spillway", lat: 17.4000, lng: 73.7500, isSpillway: true },
+            { id: "patan-ghat", name: "Patan Koyna Bridge", lat: 17.3800, lng: 73.8500 },
+            { id: "karad-sangam", name: "Karad Preeti Sangam", lat: 17.2890, lng: 74.1816 },
+            { id: "sangli-bridge", name: "Sangli Flood Plain", lat: 16.8524, lng: 74.5815 }
+        ]
+    },
+    "nagarjuna-sagar": {
+        id: "nagarjuna-sagar",
+        name: "Nagarjuna Sagar Dam",
+        category: "dam",
+        center: [16.5786, 79.3130],
+        defaultZoom: 12,
+        damSpecs: {
+            river: "Krishna",
+            state: "Telangana / Andhra Pradesh",
+            frl: 179.83,
+            mddl: 155.00,
+            currentLevel: 175.40,
+            grossCapacityMm3: 11560,
+            liveStorageMm3: 6840,
+            gateCount: 26
+        },
+        riverChannel: [
+            [16.6500, 79.2000],
+            [16.5786, 79.3130],
+            [16.7100, 79.6200],
+            [16.5750, 80.3550],
+            [16.5062, 80.6480]
+        ],
+        regions: [
+            { id: "ns-reservoir", name: "Nagarjuna Sagar Reservoir", lat: 16.6500, lng: 79.2000, isReservoir: true },
+            { id: "ns-spillway", name: "26 Radial Crest Gates", lat: 16.5786, lng: 79.3130, isSpillway: true },
+            { id: "wadapally", name: "Wadapally Sangam", lat: 16.7100, lng: 79.6200 },
+            { id: "amaravati-ghat", name: "Amaravati Capital Riverfront", lat: 16.5750, lng: 80.3550 },
+            { id: "prakasam-barrage", name: "Prakasam Barrage Vijayawada", lat: 16.5062, lng: 80.6480 }
         ]
     }
 };
@@ -229,6 +544,12 @@ let simulationHour = 0;
 let activeTab = null;
 
 let selectedRegion = null;
+
+let liveWeatherActive = false;
+
+let liveWeatherPollTimer = null;
+
+let currentWeatherData = null;
 
 
 /* =====================================================
@@ -446,15 +767,19 @@ function rebuildStationLayers() {
         const initialColor = getRiskColor(initialRisk);
 
         const circle = L.circle([region.lat, region.lng], {
-            radius: 400,
+            radius: region.isReservoir ? 1200 : 400,
             color: initialColor,
             fillColor: initialColor,
-            fillOpacity: 0.16,
+            fillOpacity: region.isReservoir ? 0.25 : 0.16,
             weight: 1.5,
             dashArray: '5, 5'
         }).addTo(map);
 
-        circle.bindTooltip(`<strong>${region.name.toUpperCase()}</strong><br>Monitoring Station`, {
+        let tooltipTitle = region.name.toUpperCase();
+        if (region.isReservoir) tooltipTitle = `🌊 ${tooltipTitle} (Reservoir Deep Pool)`;
+        if (region.isSpillway) tooltipTitle = `🏗️ ${tooltipTitle} (Spillway Gate Axis)`;
+
+        circle.bindTooltip(`<strong>${tooltipTitle}</strong><br>Monitoring Station`, {
             direction: 'top',
             className: 'flood-tooltip'
         });
@@ -464,6 +789,10 @@ function rebuildStationLayers() {
         });
 
         inundationLayers.push(circle);
+
+        let labelText = region.name.toUpperCase();
+        if (region.isReservoir) labelText = `🌊 ${labelText}`;
+        if (region.isSpillway) labelText = `🏗️ ${labelText}`;
 
         const icon = L.divIcon({
             className: "",
@@ -475,7 +804,7 @@ function rebuildStationLayers() {
                     <div class="marker-pulse"></div>
                     <div class="marker-core"></div>
                     <div class="marker-label">
-                        ${region.name.toUpperCase()}
+                        ${labelText}
                     </div>
                 </div>
             `,
@@ -495,6 +824,43 @@ function rebuildStationLayers() {
 
 // Initial build
 rebuildStationLayers();
+
+/* =====================================================
+   LIVE WEATHER / SATELLITE INTEGRATION
+===================================================== */
+
+async function fetchAndApplyLiveWeather(basinId) {
+    const badge = document.getElementById("mapLiveWeatherBadge");
+    const badgeText = document.getElementById("mapLiveWeatherText");
+
+    try {
+        const res = await fetch(`${API_BASE}/live-weather?basinId=${basinId}`);
+        if (res.ok) {
+            const json = await res.json();
+            if (json.success && json.data) {
+                currentWeatherData = json.data;
+                const rainVal = Number(json.data.rainfall ?? 0);
+
+                // If observational rain is registered, use it, else realistic baseline
+                rainfall = rainVal > 0 ? rainVal : (json.data.description.toLowerCase().includes("rain") ? 6 : 0);
+
+                if (rainfallSlider) rainfallSlider.value = rainfall;
+                if (simulationSlider) simulationSlider.value = rainfall;
+
+                if (badge && badgeText) {
+                    badge.style.display = "inline-flex";
+                    badgeText.textContent = `SATELLITE: ${rainfall.toFixed(1)} mm/h (${json.data.description || 'Observed'})`;
+                }
+
+                updateDashboard();
+                await requestSimulation(rainfall, simulationHour);
+                return;
+            }
+        }
+    } catch (err) {
+        console.warn("Live weather fetch error:", err.message);
+    }
+}
 
 /* =====================================================
    BASIN SWITCHING LOGIC
@@ -531,7 +897,7 @@ async function switchBasin(basinId) {
     // Pan map to new basin geographic center
     if (basin.center && basin.defaultZoom) {
         map.flyTo(basin.center, basin.defaultZoom, {
-            duration: 1.2,
+            duration: 1.4,
             easeLinearity: 0.25
         });
     }
@@ -545,7 +911,8 @@ async function switchBasin(basinId) {
     // Update Live Map Header Title
     const titleElem = document.getElementById("activeBasinTitle");
     if (titleElem) {
-        titleElem.textContent = `${(basin.name || basinId).toUpperCase()} • LIVE HYDROLOGY`;
+        const typeLabel = basin.category === 'dam' ? 'DAM & RESERVOIR SYSTEM' : 'LIVE HYDROLOGY';
+        titleElem.textContent = `${(basin.name || basinId).toUpperCase()} • ${typeLabel}`;
     }
 
     // Reset inspector
@@ -558,10 +925,14 @@ async function switchBasin(basinId) {
     // Rebuild station markers & hazard circles
     rebuildStationLayers();
 
-    // Reset current simulation state & trigger fresh simulation for this basin
-    latestSimulationData = null;
-    updateDashboard();
-    await requestSimulation(rainfall, simulationHour);
+    // If live weather toggle is ON, fetch real satellite precipitation for this new basin
+    if (liveWeatherActive) {
+        await fetchAndApplyLiveWeather(basinId);
+    } else {
+        latestSimulationData = null;
+        updateDashboard();
+        await requestSimulation(rainfall, simulationHour);
+    }
 }
 
 
@@ -976,6 +1347,98 @@ function updateDashboard() {
             ? "All monitored regions are currently within normal conditions."
 
             : `${stats.activeZones} region(s) are currently under elevated flood risk.`;
+
+
+    /* ---------------------------------------------
+       DAM & RESERVOIR TELEMETRY CARD
+    --------------------------------------------- */
+
+    const damCard = document.getElementById("damTelemetryCard");
+    const activeBasin = BASINS_DATA[activeBasinId] || BASINS_DATA.mithi;
+    const isDam = activeBasin.category === 'dam' || (latestSimulationData && latestSimulationData.damMetrics);
+
+    if (damCard) {
+        if (isDam) {
+            damCard.style.display = "block";
+            const metrics = (latestSimulationData && latestSimulationData.damMetrics) ? latestSimulationData.damMetrics : null;
+            const specs = activeBasin.damSpecs || {};
+
+            const nameDisp = document.getElementById("damNameDisplay");
+            const subDisp = document.getElementById("damSubtextDisplay");
+            const pillDisp = document.getElementById("damStatusPill");
+            const levelVal = document.getElementById("damLevelVal");
+            const frlVal = document.getElementById("damFrlVal");
+            const frlMeter = document.getElementById("damFrlMeter");
+            const storageVal = document.getElementById("damLiveStorageVal");
+            const storagePercentVal = document.getElementById("damStoragePercentVal");
+            const storageMeter = document.getElementById("damStorageMeter");
+            const gatesVal = document.getElementById("damGatesVal");
+            const gateDesc = document.getElementById("damGateDesc");
+            const inflowVal = document.getElementById("damInflowVal");
+            const outflowVal = document.getElementById("damOutflowVal");
+            const downStatus = document.getElementById("damDownstreamStatus");
+            const alertBanner = document.getElementById("damAlertBanner");
+            const alertText = document.getElementById("damAlertText");
+
+            if (nameDisp) nameDisp.textContent = activeBasin.name;
+            if (subDisp) subDisp.textContent = `${specs.river || 'River Basin'} • ${specs.state || 'India'}`;
+
+            const frl = metrics ? metrics.frl : (specs.frl || 100);
+            const curLvl = metrics ? metrics.currentLevel : (specs.currentLevel || (frl - 3));
+            const liveCap = metrics ? metrics.liveStorageMm3 : (specs.liveStorageMm3 || 5000);
+            const livePct = metrics ? metrics.liveStoragePercent : 85;
+            const openGates = metrics ? metrics.openGates : 0;
+            const totalGates = specs.gateCount || 10;
+            const inCfs = metrics ? metrics.inflowCusecs : (specs.inflowCusecs || 25000);
+            const outCfs = metrics ? metrics.outflowCusecs : (specs.outflowCusecs || 8000);
+            const damStatus = metrics ? metrics.status : 'NORMAL';
+
+            if (levelVal) levelVal.textContent = curLvl.toFixed(2);
+            if (frlVal) frlVal.textContent = frl.toFixed(2);
+            if (frlMeter) frlMeter.style.width = `${Math.min(100, Math.max(5, (curLvl / frl) * 100))}%`;
+
+            if (storageVal) storageVal.textContent = Number(liveCap).toLocaleString();
+            if (storagePercentVal) storagePercentVal.textContent = `${livePct}%`;
+            if (storageMeter) storageMeter.style.width = `${livePct}%`;
+
+            if (gatesVal) gatesVal.textContent = `${openGates} / ${totalGates} GATES OPEN`;
+            if (gateDesc) gateDesc.textContent = openGates > 0 ? `Active Discharge: Flood Release` : `Gates Closed: Routine Baseflow`;
+
+            if (inflowVal) inflowVal.textContent = Number(inCfs).toLocaleString();
+            if (outflowVal) outflowVal.textContent = Number(outCfs).toLocaleString();
+
+            if (pillDisp) {
+                pillDisp.textContent = damStatus.replace('_', ' ');
+                pillDisp.className = 'dam-status-pill';
+                if (damStatus === 'EMERGENCY_DISCHARGE') {
+                    pillDisp.classList.add('critical');
+                } else if (damStatus === 'CONTROLLED_SPILL' || damStatus === 'PRECAUTIONARY_DISCHARGE') {
+                    pillDisp.classList.add('warning');
+                }
+            }
+
+            if (downStatus) {
+                if (openGates > 0) {
+                    downStatus.textContent = `⚠️ High flood surge propagating into downstream channel!`;
+                    downStatus.style.color = 'var(--orange)';
+                } else {
+                    downStatus.textContent = `Downstream channel capacity: Safe`;
+                    downStatus.style.color = '#64748b';
+                }
+            }
+
+            if (alertBanner && alertText) {
+                if (metrics && metrics.spillwayAlert) {
+                    alertBanner.style.display = "flex";
+                    alertText.textContent = metrics.spillwayAlert;
+                } else {
+                    alertBanner.style.display = "none";
+                }
+            }
+        } else {
+            damCard.style.display = "none";
+        }
+    }
 
 
     /* ---------------------------------------------
@@ -1518,6 +1981,42 @@ const basinSelectElement = document.getElementById("basinSelect");
 if (basinSelectElement) {
     basinSelectElement.addEventListener("change", function () {
         switchBasin(this.value);
+    });
+}
+
+const liveDataToggleElement = document.getElementById("liveDataToggle");
+const liveStatusTextElement = document.getElementById("liveStatusText");
+const mapLiveBadgeElement = document.getElementById("mapLiveWeatherBadge");
+
+if (liveDataToggleElement) {
+    liveDataToggleElement.addEventListener("change", async function () {
+        liveWeatherActive = this.checked;
+
+        if (liveStatusTextElement) {
+            if (liveWeatherActive) {
+                liveStatusTextElement.textContent = "ON";
+                liveStatusTextElement.classList.add("active");
+            } else {
+                liveStatusTextElement.textContent = "OFF";
+                liveStatusTextElement.classList.remove("active");
+            }
+        }
+
+        if (liveWeatherActive) {
+            await fetchAndApplyLiveWeather(activeBasinId);
+            clearInterval(liveWeatherPollTimer);
+            liveWeatherPollTimer = setInterval(function () {
+                if (liveWeatherActive) {
+                    fetchAndApplyLiveWeather(activeBasinId);
+                }
+            }, 30000);
+        } else {
+            clearInterval(liveWeatherPollTimer);
+            if (mapLiveBadgeElement) {
+                mapLiveBadgeElement.style.display = "none";
+            }
+            updateDashboard();
+        }
     });
 }
 

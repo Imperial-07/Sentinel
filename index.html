@@ -85,18 +85,50 @@
                 <div class="status-item basin-selector-container">
 
                     <div class="basin-selector-label">
-                        RIVER BASIN
+                        SYSTEM / CATCHMENT
                     </div>
 
-                    <select id="basinSelect" class="basin-select" title="Select River Basin Catchment">
-                        <option value="mithi">Mithi River (Central Mumbai)</option>
-                        <option value="ulhas">Ulhas River (Eastern Metro / Thane)</option>
-                        <option value="dahisar">Dahisar River (North / SGNP)</option>
-                        <option value="oshiwara">Oshiwara River (Western Suburbs)</option>
+                    <select id="basinSelect" class="basin-select" title="Select River Basin or Strategic Dam">
+                        <optgroup label="🏙️ Urban Basins (Mumbai MMR)">
+                            <option value="mithi" selected>Mithi River (Central Mumbai)</option>
+                            <option value="ulhas">Ulhas River (Eastern Metro / Thane)</option>
+                            <option value="dahisar">Dahisar River (North / SGNP)</option>
+                            <option value="oshiwara">Oshiwara River (Western Suburbs)</option>
+                        </optgroup>
+                        <optgroup label="🏞️ National River Basins (India)">
+                            <option value="ganga">Ganga River Basin (Rishikesh to Farakka)</option>
+                            <option value="brahmaputra">Brahmaputra Basin (Assam Corridor)</option>
+                            <option value="narmada">Narmada Basin (Amarkantak to Bharuch)</option>
+                            <option value="godavari">Godavari Basin (Nashik to Rajahmundry)</option>
+                            <option value="krishna">Krishna Basin (Mahabaleshwar to Delta)</option>
+                        </optgroup>
+                        <optgroup label="🏗️ Major Dams & Reservoirs">
+                            <option value="sardar-sarovar">Sardar Sarovar Dam (Narmada / Gujarat)</option>
+                            <option value="tehri-dam">Tehri Dam (Bhagirathi / Uttarakhand)</option>
+                            <option value="hirakud-dam">Hirakud Dam (Mahanadi / Odisha)</option>
+                            <option value="idukki-dam">Idukki & Cheruthoni (Periyar / Kerala)</option>
+                            <option value="koyna-dam">Koyna Dam (Koyna / Maharashtra)</option>
+                            <option value="nagarjuna-sagar">Nagarjuna Sagar Dam (Krishna / AP-TS)</option>
+                        </optgroup>
                     </select>
 
                 </div>
 
+                <div class="status-item live-toggle-container">
+
+                    <div class="basin-selector-label">
+                        LIVE DATA
+                    </div>
+
+                    <div class="live-toggle-wrapper">
+                        <label class="live-switch" title="Toggle Real-Time IMD & Open-Meteo Satellite Precipitation Telemetry">
+                            <input type="checkbox" id="liveDataToggle">
+                            <span class="live-slider"></span>
+                        </label>
+                        <span class="live-status-pill" id="liveStatusText">OFF</span>
+                    </div>
+
+                </div>
 
                 <div class="status-item">
 
@@ -104,11 +136,11 @@
                         SYSTEM
                     </div>
 
-                    <div class="status-value online">
+                    <div class="status-value online" id="backendStatus">
 
-                        <span class="online-dot"></span>
+                        <span class="online-dot" id="backendDot"></span>
 
-                        ONLINE
+                        <span id="backendStatusText">ONLINE</span>
 
                     </div>
 
@@ -345,6 +377,61 @@
 
                 </div>
 
+                <div class="dam-telemetry-card" id="damTelemetryCard" style="display: none;">
+                    <div class="dam-card-header">
+                        <div class="dam-title-block">
+                            <span class="dam-badge">🏗️ RESERVOIR TELEMETRY</span>
+                            <h3 id="damNameDisplay">Sardar Sarovar Reservoir</h3>
+                            <span class="dam-subtext" id="damSubtextDisplay">Narmada River • Gujarat</span>
+                        </div>
+                        <div class="dam-status-pill" id="damStatusPill">NORMAL</div>
+                    </div>
+                    
+                    <div class="dam-metrics-grid">
+                        <div class="dam-metric-item">
+                            <div class="metric-label">RESERVOIR LEVEL (FRL)</div>
+                            <div class="metric-value-row">
+                                <span class="metric-val" id="damLevelVal">133.20</span>
+                                <span class="metric-denom">/ <span id="damFrlVal">138.68</span> m</span>
+                            </div>
+                            <div class="dam-meter-track">
+                                <div class="dam-meter-fill" id="damFrlMeter" style="width: 85%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="dam-metric-item">
+                            <div class="metric-label">LIVE STORAGE CAPACITY</div>
+                            <div class="metric-value-row">
+                                <span class="metric-val" id="damLiveStorageVal">4,930</span>
+                                <span class="metric-denom">Mm³ (<span id="damStoragePercentVal">85%</span>)</span>
+                            </div>
+                            <div class="dam-meter-track">
+                                <div class="dam-meter-fill storage" id="damStorageMeter" style="width: 85%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="dam-metric-item">
+                            <div class="metric-label">SPILLWAY GATES OPERATION</div>
+                            <div class="metric-val-large" id="damGatesVal">0 / 30 OPEN</div>
+                            <div class="metric-sub" id="damGateDesc">Status: Normal Baseflow</div>
+                        </div>
+
+                        <div class="dam-metric-item">
+                            <div class="metric-label">INFLOW vs SPILLWAY OUTFLOW</div>
+                            <div class="metric-flow-row">
+                                <span class="flow-in">IN: <strong id="damInflowVal">45,000</strong> cfs</span>
+                                <span class="flow-out">OUT: <strong id="damOutflowVal">15,000</strong> cfs</span>
+                            </div>
+                            <div class="metric-sub" id="damDownstreamStatus">Downstream: Safe Channel Capacity</div>
+                        </div>
+                    </div>
+
+                    <div class="dam-alert-banner" id="damAlertBanner" style="display: none;">
+                        <span class="alert-icon">⚠️</span>
+                        <span id="damAlertText">SPILLWAY RELEASE: Advance flood moderation in effect.</span>
+                    </div>
+                </div>
+
 
                 <div class="system-card">
 
@@ -431,8 +518,14 @@
                 </div>
 
 
-                <div class="live-indicator">
-                    ● LIVE
+                <div class="map-status-column" style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+                    <div class="live-indicator">
+                        ● ACTIVE SYSTEM
+                    </div>
+                    <div class="live-weather-badge" id="mapLiveWeatherBadge" style="display: none;">
+                        <span class="live-pulse-dot"></span>
+                        <span id="mapLiveWeatherText">SATELLITE: 0.0 mm/h</span>
+                    </div>
                 </div>
 
             </div>

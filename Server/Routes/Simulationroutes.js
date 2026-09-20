@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const { runSimulation, getRegions, listBasins, getBasin } = require('../Math/simulator');
+const { fetchLiveWeather } = require('../Services/weatherService');
 
 /**
  * Health check endpoint for dashboard connection status
@@ -11,10 +12,33 @@ router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     service: 'FlowShield Simulation Engine',
-    model: 'Mumbai Multi-Catchment Hydrology v2.0',
-    supportedBasins: ['mithi', 'ulhas', 'dahisar', 'oshiwara'],
+    model: 'India Pan-Basin & Reservoir Hydrology v3.0',
     timestamp: new Date().toISOString(),
   });
+});
+
+/**
+ * Live observational weather & precipitation telemetry from Open-Meteo & IMD radar
+ */
+router.get('/live-weather', async (req, res) => {
+  try {
+    const basinId = req.query.basin || req.query.basinId || 'mithi';
+    const basin = getBasin(basinId);
+    const lat = req.query.lat ? Number(req.query.lat) : basin.center[0];
+    const lng = req.query.lng ? Number(req.query.lng) : basin.center[1];
+
+    const weather = await fetchLiveWeather(lat, lng);
+    res.json({
+      success: true,
+      basinId: basin.id,
+      basinName: basin.name,
+      coordinates: [lat, lng],
+      data: weather,
+    });
+  } catch (error) {
+    console.error('Weather error:', error.message);
+    res.status(500).json({ success: false, error: 'Failed to fetch live weather' });
+  }
 });
 
 /**

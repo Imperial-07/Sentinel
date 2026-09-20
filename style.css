@@ -1974,3 +1974,298 @@ input[type="range"]::-moz-range-thumb {
     border-color: var(--cyan);
     font-weight: 700;
 }
+
+.basin-select optgroup {
+    background: #02090e;
+    color: #35d8e8;
+    font-weight: 700;
+    font-size: 10px;
+}
+
+.basin-select option {
+    background: #04141e;
+    color: #e5f5f7;
+    font-size: 11px;
+    padding: 3px 6px;
+}
+
+/* Live Data Toggle in Top HUD */
+.live-toggle-container {
+    border-left: 1px solid rgba(53, 216, 232, 0.2);
+    padding-left: 12px;
+}
+
+.live-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.live-switch {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.live-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.live-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(53, 216, 232, 0.3);
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.live-slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #607b84;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.live-switch input:checked + .live-slider {
+    background-color: rgba(66, 230, 164, 0.25);
+    border-color: var(--green);
+}
+
+.live-switch input:checked + .live-slider:before {
+    transform: translateX(14px);
+    background-color: var(--green);
+    box-shadow: 0 0 8px var(--green);
+}
+
+.live-status-pill {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #607b84;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.live-status-pill.active {
+    color: var(--green);
+    background: rgba(66, 230, 164, 0.15);
+    border: 1px solid rgba(66, 230, 164, 0.4);
+    box-shadow: 0 0 8px rgba(66, 230, 164, 0.2);
+}
+
+/* Map Live Weather Badge */
+.live-weather-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    background: rgba(4, 24, 38, 0.85);
+    border: 1px solid rgba(66, 230, 164, 0.35);
+    border-radius: 12px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    color: var(--green);
+    backdrop-filter: blur(8px);
+}
+
+.live-pulse-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--green);
+    border-radius: 50%;
+    animation: livePulse 1.8s infinite;
+}
+
+@keyframes livePulse {
+    0% { transform: scale(0.9); opacity: 1; box-shadow: 0 0 0 0 rgba(66, 230, 164, 0.7); }
+    70% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 0 7px rgba(66, 230, 164, 0); }
+    100% { transform: scale(0.9); opacity: 1; box-shadow: 0 0 0 0 rgba(66, 230, 164, 0); }
+}
+
+/* =====================================================
+   DAM & RESERVOIR TELEMETRY CARD
+===================================================== */
+.dam-telemetry-card {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, rgba(6, 24, 38, 0.95), rgba(4, 16, 27, 0.92));
+    border: 1px solid rgba(53, 216, 232, 0.35);
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(14px);
+    animation: fadeInSlide 0.3s ease-out;
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dam-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(53, 216, 232, 0.15);
+    padding-bottom: 10px;
+}
+
+.dam-badge {
+    font-size: 8px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+}
+
+.dam-title-block h3 {
+    margin: 4px 0 2px;
+    font-size: 15px;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.dam-subtext {
+    font-size: 10px;
+    color: #7ba2af;
+}
+
+.dam-status-pill {
+    padding: 4px 10px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    background: rgba(66, 230, 164, 0.15);
+    color: var(--green);
+    border: 1px solid rgba(66, 230, 164, 0.4);
+}
+
+.dam-status-pill.warning {
+    background: rgba(255, 139, 61, 0.2);
+    color: var(--orange);
+    border-color: var(--orange);
+}
+
+.dam-status-pill.critical {
+    background: rgba(255, 77, 90, 0.25);
+    color: var(--red);
+    border-color: var(--red);
+    box-shadow: 0 0 10px rgba(255, 77, 90, 0.4);
+    animation: alertPulse 1.2s infinite alternate;
+}
+
+.dam-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.dam-metric-item {
+    background: rgba(2, 11, 18, 0.6);
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metric-label {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: #607b84;
+    margin-bottom: 6px;
+}
+
+.metric-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.metric-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: #e5f5f7;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.metric-denom {
+    font-size: 10px;
+    color: #7ba2af;
+}
+
+.metric-val-large {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 4px;
+}
+
+.metric-flow-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.flow-in { color: #38bdf8; }
+.flow-out { color: #f59e0b; }
+
+.metric-sub {
+    font-size: 9px;
+    color: #64748b;
+}
+
+.dam-meter-track {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.dam-meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #38bdf8, #00e5ff);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+.dam-meter-fill.storage {
+    background: linear-gradient(90deg, #34d399, #10b981);
+}
+
+.dam-alert-banner {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: rgba(255, 77, 90, 0.15);
+    border: 1px solid rgba(255, 77, 90, 0.4);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #ffa4a8;
+    line-height: 1.4;
+}
