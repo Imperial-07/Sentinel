@@ -1900,3 +1900,77 @@ input[type="range"]::-moz-range-thumb {
     height: 8px;
     border-radius: 50%;
 }
+
+/* =====================================================
+   BASIN SELECTOR HUD STYLES
+   ===================================================== */
+.basin-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(3, 16, 26, 0.85);
+    border: 1px solid rgba(53, 216, 232, 0.28);
+    border-radius: 6px;
+    padding: 4px 10px;
+    box-shadow: 0 0 14px rgba(53, 216, 232, 0.12);
+}
+
+.basin-selector-label {
+    color: #557b88;
+    font-size: 8px;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.basin-select {
+    background: transparent;
+    color: var(--cyan);
+    border: none;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    outline: none;
+    padding: 4px 6px;
+}
+
+.basin-select option {
+    background: #041017;
+    color: #e5f5f7;
+}
+
+/* Scenario quick buttons */
+.scenario-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+    margin-bottom: 12px;
+}
+
+.scenario-btn {
+    padding: 5px 10px;
+    font-size: 8px;
+    font-family: inherit;
+    letter-spacing: 1px;
+    color: #7ba2af;
+    background: rgba(4, 20, 31, 0.7);
+    border: 1px solid rgba(53, 216, 232, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.scenario-btn:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+    background: rgba(53, 216, 232, 0.12);
+}
+
+.scenario-btn.active {
+    color: #000;
+    background: var(--cyan);
+    border-color: var(--cyan);
+    font-weight: 700;
+}

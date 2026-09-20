@@ -82,6 +82,22 @@
             <div class="system-status">
 
 
+                <div class="status-item basin-selector-container">
+
+                    <div class="basin-selector-label">
+                        RIVER BASIN
+                    </div>
+
+                    <select id="basinSelect" class="basin-select" title="Select River Basin Catchment">
+                        <option value="mithi">Mithi River (Central Mumbai)</option>
+                        <option value="ulhas">Ulhas River (Eastern Metro / Thane)</option>
+                        <option value="dahisar">Dahisar River (North / SGNP)</option>
+                        <option value="oshiwara">Oshiwara River (Western Suburbs)</option>
+                    </select>
+
+                </div>
+
+
                 <div class="status-item">
 
                     <div class="status-label">
@@ -403,7 +419,7 @@
                         LIVE FLOOD MONITORING
                     </div>
 
-                    <h2>
+                    <h2 id="activeBasinTitle">
                         Mithi River Basin
                     </h2>
 
@@ -477,7 +493,7 @@
                     <div class="rainfall-control">
 
                         <label>
-                            ADJUST RAINFALL
+                            ADJUST RAINFALL INTENSITY
                         </label>
 
 
@@ -485,7 +501,7 @@
                             type="range"
                             id="rainfallSlider"
                             min="0"
-                            max="30"
+                            max="100"
                             value="9"
                             step="1"
                         >
@@ -494,17 +510,30 @@
                         <div class="slider-values">
 
                             <span>
-                                0
+                                0 (Dry)
                             </span>
 
                             <span>
-                                15
+                                30 (Moderate)
                             </span>
 
                             <span>
-                                30 mm/h
+                                65 (Heavy)
                             </span>
 
+                            <span>
+                                100 mm/h (Cloudburst)
+                            </span>
+
+                        </div>
+
+
+                        <div class="scenario-presets">
+                            <span style="font-size:8px; letter-spacing:1px; color:#50717e; display:flex; align-items:center;">SCENARIOS:</span>
+                            <button type="button" class="scenario-btn active" data-rain="9">Normal Monsoon (9 mm/h)</button>
+                            <button type="button" class="scenario-btn" data-rain="32">Moderate Downpour (32 mm/h)</button>
+                            <button type="button" class="scenario-btn" data-rain="68">Very Heavy Storm (68 mm/h)</button>
+                            <button type="button" class="scenario-btn" data-rain="95">26-July Cloudburst (95 mm/h)</button>
                         </div>
 
 
@@ -514,89 +543,8 @@
                 </div>
 
 
-                <div class="rainfall-bars">
-
-
-                    <div class="rain-row">
-
-                        <span>
-                            Mithi
-                        </span>
-
-                        <div class="bar">
-                            <div
-                                class="bar-fill"
-                                id="mithiBar"
-                            ></div>
-                        </div>
-
-                        <span id="mithiRainfall">
-                            9
-                        </span>
-
-                    </div>
-
-
-                    <div class="rain-row">
-
-                        <span>
-                            Powai
-                        </span>
-
-                        <div class="bar">
-                            <div
-                                class="bar-fill"
-                                id="powaiBar"
-                            ></div>
-                        </div>
-
-                        <span id="powaiRainfall">
-                            9
-                        </span>
-
-                    </div>
-
-
-                    <div class="rain-row">
-
-                        <span>
-                            Kurla
-                        </span>
-
-                        <div class="bar">
-                            <div
-                                class="bar-fill"
-                                id="kurlaBar"
-                            ></div>
-                        </div>
-
-                        <span id="kurlaRainfall">
-                            11
-                        </span>
-
-                    </div>
-
-
-                    <div class="rain-row">
-
-                        <span>
-                            Mahim
-                        </span>
-
-                        <div class="bar">
-                            <div
-                                class="bar-fill"
-                                id="mahimBar"
-                            ></div>
-                        </div>
-
-                        <span id="mahimRainfall">
-                            12
-                        </span>
-
-                    </div>
-
-
+                <div class="rainfall-bars" id="rainfallBarsContainer">
+                    <!-- Populated dynamically per active basin -->
                 </div>
 
 
@@ -658,14 +606,27 @@
                             type="range"
                             id="simulationSlider"
                             min="0"
-                            max="30"
+                            max="100"
                             value="9"
                             step="1"
                         >
 
+                        <div class="slider-values">
+                            <span>0</span>
+                            <span>30</span>
+                            <span>65</span>
+                            <span>100 mm/h</span>
+                        </div>
+
 
                     </div>
 
+                    <div class="scenario-presets" style="margin-bottom: 20px;">
+                        <button type="button" class="scenario-btn active" data-rain="9">9 mm/h (Normal)</button>
+                        <button type="button" class="scenario-btn" data-rain="32">32 mm/h (Moderate)</button>
+                        <button type="button" class="scenario-btn" data-rain="68">68 mm/h (Heavy)</button>
+                        <button type="button" class="scenario-btn" data-rain="95">95 mm/h (Cloudburst)</button>
+                    </div>
 
                     <div class="simulation-buttons">
 

@@ -104,45 +104,107 @@ window.addEventListener(
 ===================================================== */
 
 
-const regions = [
+let activeBasinId = "mithi";
 
-    {
-        name: "Powai",
-        lat: 19.1197,
-        lng: 72.9051
+const BASINS_DATA = {
+    mithi: {
+        id: "mithi",
+        name: "Mithi River Catchment",
+        center: [19.076, 72.872],
+        defaultZoom: 12,
+        riverChannel: [
+            [19.1270, 72.9100],
+            [19.1197, 72.9051],
+            [19.1145, 72.8965],
+            [19.1074, 72.8846],
+            [19.0980, 72.8815],
+            [19.0880, 72.8835],
+            [19.0726, 72.8845],
+            [19.0668, 72.8686],
+            [19.0550, 72.8580],
+            [19.0435, 72.8510],
+            [19.0410, 72.8493],
+            [19.0410, 72.8397],
+            [19.0380, 72.8310]
+        ],
+        regions: [
+            { id: "powai", name: "Powai", lat: 19.1197, lng: 72.9051 },
+            { id: "saki-naka", name: "Saki Naka", lat: 19.1074, lng: 72.8846 },
+            { id: "kurla", name: "Kurla", lat: 19.0726, lng: 72.8845 },
+            { id: "bkc", name: "BKC", lat: 19.0668, lng: 72.8686 },
+            { id: "dharavi", name: "Dharavi", lat: 19.0410, lng: 72.8493 },
+            { id: "mahim", name: "Mahim", lat: 19.0410, lng: 72.8397 }
+        ]
     },
-
-    {
-        name: "Saki Naka",
-        lat: 19.1074,
-        lng: 72.8846
+    ulhas: {
+        id: "ulhas",
+        name: "Ulhas River Basin",
+        center: [19.225, 73.115],
+        defaultZoom: 11,
+        riverChannel: [
+            [19.1663, 73.2370],
+            [19.1850, 73.1820],
+            [19.2210, 73.1550],
+            [19.2437, 73.1355],
+            [19.2183, 73.0867],
+            [19.1890, 73.0450],
+            [19.1982, 72.9781],
+            [19.1550, 72.9980]
+        ],
+        regions: [
+            { id: "badlapur", name: "Badlapur", lat: 19.1663, lng: 73.2370 },
+            { id: "ulhasnagar", name: "Ulhasnagar", lat: 19.2210, lng: 73.1550 },
+            { id: "kalyan", name: "Kalyan Creek", lat: 19.2437, lng: 73.1355 },
+            { id: "dombivli", name: "Dombivli", lat: 19.2183, lng: 73.0867 },
+            { id: "diva", name: "Diva Junction", lat: 19.1890, lng: 73.0450 },
+            { id: "thane-estuary", name: "Thane Estuary", lat: 19.1982, lng: 72.9781 }
+        ]
     },
-
-    {
-        name: "Kurla",
-        lat: 19.0726,
-        lng: 72.8845
+    dahisar: {
+        id: "dahisar",
+        name: "Dahisar River Basin",
+        center: [19.245, 72.860],
+        defaultZoom: 13,
+        riverChannel: [
+            [19.2315, 72.9150],
+            [19.2410, 72.8870],
+            [19.2475, 72.8680],
+            [19.2520, 72.8530],
+            [19.2505, 72.8390],
+            [19.2430, 72.8220]
+        ],
+        regions: [
+            { id: "sgnp-upper", name: "SGNP Forest", lat: 19.2315, lng: 72.9150 },
+            { id: "dahisar-east", name: "Dahisar East", lat: 19.2410, lng: 72.8870 },
+            { id: "weh-culvert", name: "WEH Culvert", lat: 19.2475, lng: 72.8680 },
+            { id: "dahisar-west", name: "Dahisar West", lat: 19.2520, lng: 72.8530 },
+            { id: "gorai-creek", name: "Gorai Creek", lat: 19.2430, lng: 72.8220 }
+        ]
     },
-
-    {
-        name: "BKC",
-        lat: 19.0668,
-        lng: 72.8686
-    },
-
-    {
-        name: "Dharavi",
-        lat: 19.0410,
-        lng: 72.8493
-    },
-
-    {
-        name: "Mahim",
-        lat: 19.0410,
-        lng: 72.8397
+    oshiwara: {
+        id: "oshiwara",
+        name: "Oshiwara River Basin",
+        center: [19.145, 72.840],
+        defaultZoom: 13,
+        riverChannel: [
+            [19.1460, 72.8930],
+            [19.1550, 72.8750],
+            [19.1580, 72.8520],
+            [19.1500, 72.8360],
+            [19.1380, 72.8260],
+            [19.1320, 72.8120]
+        ],
+        regions: [
+            { id: "aarey-hills", name: "Aarey Hills", lat: 19.1460, lng: 72.8930 },
+            { id: "goregaon-hub", name: "Goregaon Hub", lat: 19.1580, lng: 72.8520 },
+            { id: "oshiwara-link", name: "Oshiwara Link", lat: 19.1500, lng: 72.8360 },
+            { id: "millat-nagar", name: "Millat Nagar", lat: 19.1380, lng: 72.8260 },
+            { id: "versova-creek", name: "Versova Creek", lat: 19.1320, lng: 72.8120 }
+        ]
     }
+};
 
-];
+let regions = BASINS_DATA.mithi.regions;
 
 
 /* =====================================================
@@ -339,27 +401,13 @@ function calculateRiverLevel() {
 
 
 /* =====================================================
-   MITHI RIVER & FLOOD INUNDATION LAYERS
+   RIVER & FLOOD HAZARD LAYERS
 ===================================================== */
 
-const mithiRiverChannel = [
-    [19.1270, 72.9100], // Powai Lake upstream feeder
-    [19.1197, 72.9051], // Powai weir
-    [19.1145, 72.8965], // Marol corridor
-    [19.1074, 72.8846], // Saki Naka junction
-    [19.0980, 72.8815], // Airport East culvert
-    [19.0880, 72.8835], // Bail Bazar
-    [19.0726, 72.8845], // Kurla West (low basin)
-    [19.0668, 72.8686], // BKC channel
-    [19.0550, 72.8580], // Kalanagar
-    [19.0435, 72.8510], // Dharavi inlet
-    [19.0410, 72.8493], // Dharavi
-    [19.0410, 72.8397], // Mahim Creek
-    [19.0380, 72.8310]  // Mahim Bay discharge into Arabian Sea
-];
+const currentBasin = BASINS_DATA[activeBasinId] || BASINS_DATA.mithi;
 
 // 1. Broad Glow & Flood Corridor
-const riverGlowLayer = L.polyline(mithiRiverChannel, {
+const riverGlowLayer = L.polyline(currentBasin.riverChannel, {
     color: '#00e5ff',
     weight: 7,
     opacity: 0.75,
@@ -369,7 +417,7 @@ const riverGlowLayer = L.polyline(mithiRiverChannel, {
 }).addTo(map);
 
 // 2. Dynamic Animated Flow Stream
-const riverFlowLayer = L.polyline(mithiRiverChannel, {
+const riverFlowLayer = L.polyline(currentBasin.riverChannel, {
     color: '#ffffff',
     weight: 2.5,
     opacity: 0.9,
@@ -378,141 +426,143 @@ const riverFlowLayer = L.polyline(mithiRiverChannel, {
     className: 'river-flow-path'
 }).addTo(map);
 
-// 3. Flood Inundation Hazard Zones around stations
+// 3. Flood Inundation Hazard Zones & Station Markers
 const inundationLayers = [];
-
-regions.forEach(function (region, index) {
-    const initialRisk = getRisk(rainfall, index);
-    const initialColor = getRiskColor(initialRisk);
-
-    const circle = L.circle([region.lat, region.lng], {
-        radius: 400,
-        color: initialColor,
-        fillColor: initialColor,
-        fillOpacity: 0.16,
-        weight: 1.5,
-        dashArray: '5, 5'
-    }).addTo(map);
-
-    circle.bindTooltip(`<strong>${region.name.toUpperCase()}</strong><br>Monitoring Station`, {
-        direction: 'top',
-        className: 'flood-tooltip'
-    });
-
-    circle.on('click', function () {
-        openRegionInspector(region, index);
-    });
-
-    inundationLayers.push(circle);
-});
-
-
-/* =====================================================
-   MAP MARKERS
-===================================================== */
-
-
 const markers = [];
 
+function rebuildStationLayers() {
+    markers.forEach(function (m) {
+        map.removeLayer(m);
+    });
+    markers.length = 0;
 
-regions.forEach(
+    inundationLayers.forEach(function (l) {
+        map.removeLayer(l);
+    });
+    inundationLayers.length = 0;
 
-    function (region, index) {
+    regions.forEach(function (region, index) {
+        const initialRisk = getRisk(rainfall, index);
+        const initialColor = getRiskColor(initialRisk);
 
-        const risk =
-            getRisk(
-                rainfall,
-                index
-            );
+        const circle = L.circle([region.lat, region.lng], {
+            radius: 400,
+            color: initialColor,
+            fillColor: initialColor,
+            fillOpacity: 0.16,
+            weight: 1.5,
+            dashArray: '5, 5'
+        }).addTo(map);
 
+        circle.bindTooltip(`<strong>${region.name.toUpperCase()}</strong><br>Monitoring Station`, {
+            direction: 'top',
+            className: 'flood-tooltip'
+        });
 
-        const color =
-            getRiskColor(
-                risk
-            );
+        circle.on('click', function () {
+            openRegionInspector(region, index);
+        });
 
+        inundationLayers.push(circle);
 
-        const icon =
-            L.divIcon({
-
-                className: "",
-
-                html: `
-
-                    <div
-                        class="target-marker"
-                        style="--marker-color:${color};"
-                    >
-
-                        <div
-                            class="marker-pulse"
-                        ></div>
-
-                        <div
-                            class="marker-core"
-                        ></div>
-
-                        <div
-                            class="marker-label"
-                        >
-                            ${region.name.toUpperCase()}
-                        </div>
-
+        const icon = L.divIcon({
+            className: "",
+            html: `
+                <div
+                    class="target-marker"
+                    style="--marker-color:${initialColor};"
+                >
+                    <div class="marker-pulse"></div>
+                    <div class="marker-core"></div>
+                    <div class="marker-label">
+                        ${region.name.toUpperCase()}
                     </div>
+                </div>
+            `,
+            iconSize: [64, 64],
+            iconAnchor: [32, 32]
+        });
 
-                `,
+        const marker = L.marker([region.lat, region.lng], { icon: icon }).addTo(map);
 
-                iconSize: [
-                    64,
-                    64
-                ],
+        marker.on('click', function () {
+            openRegionInspector(region, index);
+        });
 
-                iconAnchor: [
-                    32,
-                    32
-                ]
+        markers.push(marker);
+    });
+}
 
-            });
+// Initial build
+rebuildStationLayers();
 
+/* =====================================================
+   BASIN SWITCHING LOGIC
+===================================================== */
 
-        const marker =
-            L.marker(
-
-                [
-                    region.lat,
-                    region.lng
-                ],
-
-                {
-                    icon: icon
-                }
-
-            ).addTo(map);
-
-
-        marker.on(
-
-            "click",
-
-            function () {
-
-                openRegionInspector(
-                    region,
-                    index
-                );
-
-            }
-
-        );
-
-
-        markers.push(
-            marker
-        );
-
+async function switchBasin(basinId) {
+    if (!basinId || !BASINS_DATA[basinId]) {
+        basinId = "mithi";
     }
 
-);
+    activeBasinId = basinId;
+    const basinSelect = document.getElementById("basinSelect");
+    if (basinSelect && basinSelect.value !== basinId) {
+        basinSelect.value = basinId;
+    }
+
+    let basin = BASINS_DATA[basinId];
+
+    // Fetch live basin topology & real stations from backend if online
+    try {
+        const res = await fetch(`${API_BASE}/regions?basinId=${basinId}`);
+        if (res.ok) {
+            const json = await res.json();
+            if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+                basin.regions = json.data;
+            }
+        }
+    } catch (err) {
+        // Fallback gracefully to bundled BASINS_DATA
+    }
+
+    regions = basin.regions;
+
+    // Pan map to new basin geographic center
+    if (basin.center && basin.defaultZoom) {
+        map.flyTo(basin.center, basin.defaultZoom, {
+            duration: 1.2,
+            easeLinearity: 0.25
+        });
+    }
+
+    // Update river channel flow paths
+    if (basin.riverChannel) {
+        riverGlowLayer.setLatLngs(basin.riverChannel);
+        riverFlowLayer.setLatLngs(basin.riverChannel);
+    }
+
+    // Update Live Map Header Title
+    const titleElem = document.getElementById("activeBasinTitle");
+    if (titleElem) {
+        titleElem.textContent = `${(basin.name || basinId).toUpperCase()} • LIVE HYDROLOGY`;
+    }
+
+    // Reset inspector
+    selectedRegion = null;
+    const inspector = document.getElementById("regionInspector");
+    if (inspector) {
+        inspector.classList.remove("open");
+    }
+
+    // Rebuild station markers & hazard circles
+    rebuildStationLayers();
+
+    // Reset current simulation state & trigger fresh simulation for this basin
+    latestSimulationData = null;
+    updateDashboard();
+    await requestSimulation(rainfall, simulationHour);
+}
 
 
 /* =====================================================
@@ -957,81 +1007,32 @@ function updateDashboard() {
        REGIONAL RAINFALL
     --------------------------------------------- */
 
+    const barsContainer = document.getElementById("rainfallBarsContainer");
+    if (barsContainer && regions && regions.length > 0) {
+        barsContainer.innerHTML = regions.map(function (region, idx) {
+            const regRain = Math.max(0, rainfall + (idx % 3) * 1.5 - (idx === 0 ? 1 : 0));
+            const percent = Math.min(100, (regRain / 100) * 100);
+            const risk = getRisk(rainfall, idx);
+            const col = getRiskColor(risk);
+            const depth = typeof region.waterLevel === 'number'
+                ? ` • ${(region.waterLevel * 100).toFixed(1)} cm`
+                : '';
 
-    const mithi =
-        rainfall;
-
-
-    const powai =
-        rainfall;
-
-
-    const kurla =
-        rainfall + 2;
-
-
-    const mahim =
-        rainfall + 3;
-
-
-    document.getElementById(
-        "mithiRainfall"
-    ).textContent =
-        mithi;
-
-
-    document.getElementById(
-        "powaiRainfall"
-    ).textContent =
-        powai;
-
-
-    document.getElementById(
-        "kurlaRainfall"
-    ).textContent =
-        kurla;
-
-
-    document.getElementById(
-        "mahimRainfall"
-    ).textContent =
-        mahim;
-
-
-    document.getElementById(
-        "mithiBar"
-    ).style.width =
-        `${Math.min(
-            100,
-            (mithi / 30) * 100
-        )}%`;
-
-
-    document.getElementById(
-        "powaiBar"
-    ).style.width =
-        `${Math.min(
-            100,
-            (powai / 30) * 100
-        )}%`;
-
-
-    document.getElementById(
-        "kurlaBar"
-    ).style.width =
-        `${Math.min(
-            100,
-            (kurla / 30) * 100
-        )}%`;
-
-
-    document.getElementById(
-        "mahimBar"
-    ).style.width =
-        `${Math.min(
-            100,
-            (mahim / 30) * 100
-        )}%`;
+            return `
+                <div class="rainfall-bar-item" style="margin-bottom: 12px; cursor: pointer;" onclick="openRegionInspector(regions[${idx}], ${idx})">
+                    <div class="rainfall-bar-header" style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 12px;">
+                        <span class="region-name" style="font-weight: 600; color: #fff;">${region.name}</span>
+                        <span class="rainfall-rate" style="color: ${col}; font-weight: 700;">
+                            ${regRain.toFixed(1)} mm/h<span style="color: #94a3b8; font-weight: 400; font-size: 11px;">${depth}</span>
+                        </span>
+                    </div>
+                    <div class="bar-track" style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+                        <div class="bar-fill" style="width: ${percent}%; height: 100%; background-color: ${col}; border-radius: 3px; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 
 
     /* ---------------------------------------------
@@ -1506,6 +1507,45 @@ resetBtn.addEventListener(
     }
 
 );
+
+
+/* =====================================================
+   BASIN SELECTOR & SCENARIO CONTROLS
+===================================================== */
+
+const basinSelectElement = document.getElementById("basinSelect");
+
+if (basinSelectElement) {
+    basinSelectElement.addEventListener("change", function () {
+        switchBasin(this.value);
+    });
+}
+
+document.querySelectorAll(".scenario-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        const rain = Number(this.dataset.rain);
+        rainfall = rain;
+
+        if (rainfallSlider) {
+            rainfallSlider.value = rainfall;
+        }
+
+        if (simulationSlider) {
+            simulationSlider.value = rainfall;
+        }
+
+        document.querySelectorAll(".scenario-btn").forEach(function (b) {
+            if (Number(b.dataset.rain) === rain) {
+                b.classList.add("active");
+            } else {
+                b.classList.remove("active");
+            }
+        });
+
+        updateDashboard();
+        requestSimulation(rainfall, simulationHour);
+    });
+});
 
 
 /* =====================================================
@@ -2016,6 +2056,7 @@ async function requestSimulation(
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
+                        basinId: activeBasinId,
                         rainfall: Number(rainValue),
                         simulationHour: Number(hourValue)
                     })

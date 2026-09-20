@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { runSimulation, getRegions } = require('../Math/simulator');
+const { runSimulation, getRegions, listBasins, getBasin } = require('../Math/simulator');
 
 /**
  * Health check endpoint for dashboard connection status
@@ -11,7 +11,8 @@ router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     service: 'FlowShield Simulation Engine',
-    model: 'Mumbai Mithi River Catchment Hydrology v1.0',
+    model: 'Mumbai Multi-Catchment Hydrology v2.0',
+    supportedBasins: ['mithi', 'ulhas', 'dahisar', 'oshiwara'],
     timestamp: new Date().toISOString(),
   });
 });
@@ -22,20 +23,45 @@ router.get('/health', (req, res) => {
 router.get('/status', (req, res) => {
   res.json({
     status: 'online',
-    version: '1.0.0',
+    version: '2.0.0',
     uptimeSeconds: Math.round(process.uptime()),
     timestamp: new Date().toISOString(),
   });
 });
 
 /**
- * Returns baseline regional monitoring metadata
+ * Returns available river basins with geographical metadata & channel paths
+ */
+router.get('/basins', (req, res) => {
+  try {
+    const basins = listBasins();
+    res.json({
+      success: true,
+      data: basins,
+    });
+  } catch (error) {
+    console.error('Error fetching basins:', error.message);
+    res.status(500).json({ success: false, error: 'Failed to fetch catchment basins' });
+  }
+});
+
+/**
+ * Returns baseline regional monitoring metadata for a specific basin or default (Mithi)
  */
 router.get('/regions', (req, res) => {
   try {
-    const regions = getRegions();
+    const basinId = req.query.basin || req.query.basinId || 'mithi';
+    const regions = getRegions(basinId);
+    const basin = getBasin(basinId);
     res.json({
       success: true,
+      basin: {
+        id: basin.id,
+        name: basin.name,
+        center: basin.center,
+        defaultZoom: basin.defaultZoom,
+        riverChannel: basin.riverChannel,
+      },
       data: regions,
     });
   } catch (error) {
@@ -45,7 +71,7 @@ router.get('/regions', (req, res) => {
 });
 
 /**
- * Runs the hydrological flood simulation given rainfall and scenario options
+ * Runs the hydrological flood simulation given rainfall, simulationHour, and basinId
  */
 router.post('/simulate', (req, res) => {
   try {

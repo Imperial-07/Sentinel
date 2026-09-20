@@ -4,108 +4,22 @@ const hydrology = require('./hydrology');
 const flow = require('./flow');
 const risk = require('./risk');
 const stepper = require('./stepper');
+const { getBasin, listBasins } = require('./basins');
 
 /**
- * Calibrated Mumbai Mithi River Catchment topological network.
- * Water flows: Powai -> Saki Naka -> Kurla -> BKC -> Dharavi -> Mahim (Arabian Sea).
+ * Backward-compatible baseline regions (Mithi River).
  */
-const MUMBAI_REGIONS = [
-  {
-    id: 'powai',
-    name: 'Powai',
-    lat: 19.1197,
-    lng: 72.9051,
-    areaKm2: 2.5,
-    elevation: 34,
-    waterLevel: 0.05,
-    drainageCapacity: 18,
-    infiltrationRate: 4,
-    floodThreshold: 1.2,
-    surchargeDepth: 0.8,
-    neighbors: [{ id: 'saki-naka', width: 25, length: 2500, roughness: 0.035 }],
-  },
-  {
-    id: 'saki-naka',
-    name: 'Saki Naka',
-    lat: 19.1074,
-    lng: 72.8846,
-    areaKm2: 2.0,
-    elevation: 22,
-    waterLevel: 0.03,
-    drainageCapacity: 20,
-    infiltrationRate: 2,
-    floodThreshold: 0.8,
-    surchargeDepth: 0.5,
-    neighbors: [{ id: 'kurla', width: 35, length: 3200, roughness: 0.040 }],
-  },
-  {
-    id: 'kurla',
-    name: 'Kurla',
-    lat: 19.0726,
-    lng: 72.8845,
-    areaKm2: 2.8,
-    elevation: 10,
-    waterLevel: 0.08,
-    drainageCapacity: 14,
-    infiltrationRate: 1.5,
-    floodThreshold: 0.55,
-    surchargeDepth: 0.35,
-    neighbors: [{ id: 'bkc', width: 45, length: 2000, roughness: 0.038 }],
-  },
-  {
-    id: 'bkc',
-    name: 'BKC',
-    lat: 19.0668,
-    lng: 72.8686,
-    areaKm2: 3.2,
-    elevation: 7,
-    waterLevel: 0.04,
-    drainageCapacity: 26,
-    infiltrationRate: 2,
-    floodThreshold: 0.7,
-    surchargeDepth: 0.45,
-    neighbors: [{ id: 'dharavi', width: 50, length: 1800, roughness: 0.035 }],
-  },
-  {
-    id: 'dharavi',
-    name: 'Dharavi',
-    lat: 19.0410,
-    lng: 72.8493,
-    areaKm2: 2.2,
-    elevation: 4,
-    waterLevel: 0.09,
-    drainageCapacity: 15,
-    infiltrationRate: 1.0,
-    floodThreshold: 0.5,
-    surchargeDepth: 0.3,
-    neighbors: [{ id: 'mahim', width: 65, length: 1500, roughness: 0.032 }],
-  },
-  {
-    id: 'mahim',
-    name: 'Mahim',
-    lat: 19.0410,
-    lng: 72.8397,
-    areaKm2: 1.8,
-    elevation: 2,
-    waterLevel: 0.03,
-    drainageCapacity: 35,
-    infiltrationRate: 3,
-    floodThreshold: 0.9,
-    surchargeDepth: 0.6,
-    neighbors: [],
-  },
-];
-
-/**
- * Returns a cloned baseline configuration of Mumbai monitoring regions.
- */
-function getRegions() {
-  return JSON.parse(JSON.stringify(MUMBAI_REGIONS));
+function getRegions(basinId = 'mithi') {
+  const basin = getBasin(basinId);
+  return JSON.parse(JSON.stringify(basin.regions));
 }
 
 /**
- * Main simulation conductor that runs the full physical flood routing and hydrology model.
+ * Main simulation conductor that runs the physical flood routing and hydrology model.
+ * Supports multi-basin topology and realistic temporal storm progression.
+ *
  * @param {Object} inputs
+ *   - basinId: string ('mithi' | 'ulhas' | 'dahisar' | 'oshiwara')
  *   - rainfall: number (mm/h)
  *   - simulationHour: number (0-24)
  *   - drainageCapacity: optional override (mm/h)
@@ -113,6 +27,9 @@ function getRegions() {
  * @returns {Object} Simulation results formatted for frontend dashboard and API clients
  */
 function runSimulation(inputs = {}) {
+  const basinId = inputs.basinId || inputs.basin || 'mithi';
+  const basin = getBasin(basinId);
+
   const rainfall = typeof inputs.rainfall === 'number' ? Math.max(0, inputs.rainfall) : 9;
   const hour = typeof inputs.simulationHour === 'number' ? Math.max(0, inputs.simulationHour) : (inputs.hour || 1);
   const drainageOverride = inputs.drainageCapacity ? Number(inputs.drainageCapacity) : null;
@@ -120,25 +37,26 @@ function runSimulation(inputs = {}) {
   // Clone or build base regions
   let baseRegions = inputs.regions && Array.isArray(inputs.regions) && inputs.regions.length
     ? JSON.parse(JSON.stringify(inputs.regions))
-    : getRegions();
+    : getRegions(basinId);
 
   // Apply drainage capacity override if provided
   if (drainageOverride) {
     baseRegions = baseRegions.map((r) => ({ ...r, drainageCapacity: drainageOverride }));
   }
 
-  // Set up initial state
+  // Set up initial normalized state
   let currentState = stepper.normalizeState({
     time: 0,
     regions: baseRegions,
   });
 
-  // Calculate number of timesteps: e.g. 5-min intervals (300s)
-  // Run at least 1 step, or steps proportional to hour/storm duration
+  // Calculate dynamic steps:
+  // Each simulation hour accumulates physical storm duration (12 steps of 5 min per hour)
+  // When hour=0, we run 1 baseline step.
   const dtSeconds = 300;
-  const stepsToRun = Math.max(1, Math.min(48, Math.round((Math.max(1, hour) * 3600) / (dtSeconds * 4))));
+  const stepsToRun = hour === 0 ? 1 : Math.max(2, Math.min(72, hour * 6));
 
-  // Run simulation steps
+  // Run physical hydrology & lateral flow steps
   for (let i = 0; i < stepsToRun; i++) {
     currentState = stepper.stepSimulation(currentState, {
       dtSeconds,
@@ -148,7 +66,17 @@ function runSimulation(inputs = {}) {
     });
   }
 
-  const { assessments, summary, totalVolume } = currentState;
+  // Assess risk against the initial pre-storm baseline to capture cumulative rise rate accurately
+  const preDepths = baseRegions.map((r) => r.waterLevel);
+  const totalElapsedSeconds = Math.max(dtSeconds, stepsToRun * dtSeconds);
+  const assessments = currentState.regions.map((r, i) =>
+    risk.assessRegion(r, preDepths[i], totalElapsedSeconds, {
+      referenceRise: 0.03, // 3 cm/h is significant in Mumbai urban catchments
+      thresholds: { watch: 22, warning: 48 },
+    })
+  );
+
+  const summary = risk.summarize(assessments);
 
   // Match coordinates and names back to assessments
   const enrichedRegions = assessments.map((assessment) => {
@@ -169,18 +97,19 @@ function runSimulation(inputs = {}) {
   const watchZones = assessments.filter((a) => a.level === 'WATCH').length;
   const safeZones = assessments.filter((a) => a.level === 'SAFE').length;
 
-  // River gauge level in meters (base 1.5m + impact of maximum depth in critical basin)
+  // River gauge level in meters:
+  // Base 1.5m datum + dynamic response to average and bottleneck basin depths
   const maxWaterDepth = Math.max(...assessments.map((a) => a.waterLevel));
   const avgWaterDepth = assessments.reduce((sum, a) => sum + a.waterLevel, 0) / assessments.length;
-  const riverLevel = Number((1.5 + avgWaterDepth * 1.5 + maxWaterDepth * 0.8).toFixed(1));
+  const riverLevel = Number((1.5 + avgWaterDepth * 2.2 + maxWaterDepth * 1.4).toFixed(1));
 
   // Overall risk determination
   let overallRisk = 'SAFE';
-  if (criticalZones > 0 || summary.averageScore >= 65) {
+  if (criticalZones > 0 || summary.averageScore >= 50) {
     overallRisk = 'CRITICAL';
-  } else if (warningZones > 0 || summary.averageScore >= 45) {
+  } else if (warningZones > 0 || summary.averageScore >= 30) {
     overallRisk = 'WARNING';
-  } else if (watchZones > 0 || summary.averageScore >= 20) {
+  } else if (watchZones > 0 || summary.averageScore >= 15) {
     overallRisk = 'WATCH';
   }
 
@@ -194,13 +123,15 @@ function runSimulation(inputs = {}) {
   }
 
   return {
+    basinId: basin.id,
+    basinName: basin.name,
     rainfall,
     simulationHour: hour,
     riverLevel,
     overallRisk,
     riskIndex: Math.round(summary.averageScore),
     riskLevel: overallRisk,
-    waterStorage: Number(totalVolume.toFixed(2)),
+    waterStorage: Number(currentState.totalVolume.toFixed(2)),
     overflow: Number(totalOverflow.toFixed(2)),
     stats: {
       activeZones,
@@ -216,7 +147,9 @@ function runSimulation(inputs = {}) {
 }
 
 module.exports = {
-  MUMBAI_REGIONS,
+  MUMBAI_REGIONS: getRegions('mithi'),
   getRegions,
   runSimulation,
+  getBasin,
+  listBasins,
 };
