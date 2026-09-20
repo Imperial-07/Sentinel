@@ -432,13 +432,13 @@ const BASINS = {
       [24.8016, 87.9257], // Farakka Barrage
     ],
     regions: [
-      { id: 'rishikesh', name: 'Rishikesh', lat: 30.0869, lng: 78.2676, areaKm2: 35.0, elevation: 372, waterLevel: 1.10, drainageCapacity: 85, infiltrationRate: 9, floodThreshold: 4.8, surchargeDepth: 3.2, neighbors: [{ id: 'haridwar', width: 120, length: 28000, roughness: 0.035 }] },
-      { id: 'haridwar', name: 'Haridwar', lat: 29.9457, lng: 78.1642, areaKm2: 45.0, elevation: 314, waterLevel: 1.40, drainageCapacity: 95, infiltrationRate: 8, floodThreshold: 5.2, surchargeDepth: 3.5, neighbors: [{ id: 'kanpur', width: 250, length: 380000, roughness: 0.032 }] },
-      { id: 'kanpur', name: 'Kanpur', lat: 26.4499, lng: 80.3319, areaKm2: 78.0, elevation: 126, waterLevel: 2.10, drainageCapacity: 110, infiltrationRate: 4, floodThreshold: 7.5, surchargeDepth: 4.8, neighbors: [{ id: 'prayagraj', width: 450, length: 190000, roughness: 0.030 }] },
-      { id: 'prayagraj', name: 'Prayagraj Sangam', lat: 25.4358, lng: 81.8463, areaKm2: 95.0, elevation: 98, waterLevel: 2.80, drainageCapacity: 140, infiltrationRate: 3.5, floodThreshold: 8.8, surchargeDepth: 5.5, neighbors: [{ id: 'varanasi', width: 600, length: 125000, roughness: 0.028 }] },
-      { id: 'varanasi', name: 'Varanasi Ghats', lat: 25.3176, lng: 83.0062, areaKm2: 85.0, elevation: 81, waterLevel: 2.95, drainageCapacity: 150, infiltrationRate: 3.0, floodThreshold: 9.2, surchargeDepth: 6.0, neighbors: [{ id: 'patna', width: 750, length: 240000, roughness: 0.026 }] },
-      { id: 'patna', name: 'Patna Gandak Confluence', lat: 25.6127, lng: 85.1444, areaKm2: 120.0, elevation: 53, waterLevel: 3.40, drainageCapacity: 180, infiltrationRate: 2.5, floodThreshold: 10.5, surchargeDepth: 7.2, neighbors: [{ id: 'farakka', width: 1100, length: 320000, roughness: 0.024 }] },
-      { id: 'farakka', name: 'Farakka Barrage', lat: 24.8016, lng: 87.9257, areaKm2: 160.0, elevation: 28, waterLevel: 2.80, drainageCapacity: 260, infiltrationRate: 3.0, floodThreshold: 11.2, surchargeDepth: 8.0, neighbors: [] },
+      { id: 'rishikesh', name: 'Rishikesh', lat: 30.0869, lng: 78.2676, areaKm2: 35.0, elevation: 372, waterLevel: 1.10, drainageCapacity: 28, infiltrationRate: 6.0, floodThreshold: 3.2, surchargeDepth: 2.2, neighbors: [{ id: 'haridwar', width: 120, length: 28000, roughness: 0.035 }] },
+      { id: 'haridwar', name: 'Haridwar', lat: 29.9457, lng: 78.1642, areaKm2: 45.0, elevation: 314, waterLevel: 1.40, drainageCapacity: 26, infiltrationRate: 5.0, floodThreshold: 3.8, surchargeDepth: 2.6, neighbors: [{ id: 'kanpur', width: 250, length: 380000, roughness: 0.032 }] },
+      { id: 'kanpur', name: 'Kanpur', lat: 26.4499, lng: 80.3319, areaKm2: 78.0, elevation: 126, waterLevel: 2.10, drainageCapacity: 24, infiltrationRate: 4.0, floodThreshold: 5.2, surchargeDepth: 3.6, neighbors: [{ id: 'prayagraj', width: 450, length: 190000, roughness: 0.030 }] },
+      { id: 'prayagraj', name: 'Prayagraj Sangam', lat: 25.4358, lng: 81.8463, areaKm2: 95.0, elevation: 98, waterLevel: 2.80, drainageCapacity: 22, infiltrationRate: 3.5, floodThreshold: 6.5, surchargeDepth: 4.6, neighbors: [{ id: 'varanasi', width: 600, length: 125000, roughness: 0.028 }] },
+      { id: 'varanasi', name: 'Varanasi Ghats', lat: 25.3176, lng: 83.0062, areaKm2: 85.0, elevation: 81, waterLevel: 2.95, drainageCapacity: 22, infiltrationRate: 3.0, floodThreshold: 6.8, surchargeDepth: 4.8, neighbors: [{ id: 'patna', width: 750, length: 240000, roughness: 0.026 }] },
+      { id: 'patna', name: 'Patna Gandak Confluence', lat: 25.6127, lng: 85.1444, areaKm2: 120.0, elevation: 53, waterLevel: 3.40, drainageCapacity: 20, infiltrationRate: 2.5, floodThreshold: 7.8, surchargeDepth: 5.5, neighbors: [{ id: 'farakka', width: 1100, length: 320000, roughness: 0.024 }] },
+      { id: 'farakka', name: 'Farakka Barrage', lat: 24.8016, lng: 87.9257, areaKm2: 160.0, elevation: 28, waterLevel: 2.80, drainageCapacity: 45, infiltrationRate: 3.0, floodThreshold: 7.2, surchargeDepth: 5.0, neighbors: [] },
     ],
   },
 
@@ -460,12 +460,12 @@ const BASINS = {
       [26.0208, 89.9754], // Dhubri (Bangladesh border)
     ],
     regions: [
-      { id: 'pasighat', name: 'Pasighat Entry', lat: 28.0664, lng: 95.3268, areaKm2: 80.0, elevation: 153, waterLevel: 1.8, drainageCapacity: 160, infiltrationRate: 7, floodThreshold: 5.5, surchargeDepth: 3.8, neighbors: [{ id: 'dibrugarh', width: 800, length: 110000, roughness: 0.030 }] },
-      { id: 'dibrugarh', name: 'Dibrugarh Dykes', lat: 27.4728, lng: 94.9120, areaKm2: 110.0, elevation: 108, waterLevel: 2.9, drainageCapacity: 190, infiltrationRate: 4, floodThreshold: 7.2, surchargeDepth: 5.0, neighbors: [{ id: 'tezpur', width: 1200, length: 240000, roughness: 0.028 }] },
-      { id: 'tezpur', name: 'Tezpur Kolia Bhomora', lat: 26.6528, lng: 92.7926, areaKm2: 125.0, elevation: 79, waterLevel: 3.2, drainageCapacity: 220, infiltrationRate: 3.5, floodThreshold: 8.4, surchargeDepth: 6.0, neighbors: [{ id: 'guwahati', width: 1400, length: 150000, roughness: 0.026 }] },
-      { id: 'guwahati', name: 'Guwahati Saraighat', lat: 26.1856, lng: 91.7476, areaKm2: 150.0, elevation: 55, waterLevel: 3.6, drainageCapacity: 260, infiltrationRate: 3.0, floodThreshold: 9.8, surchargeDepth: 7.0, neighbors: [{ id: 'goalpara', width: 1800, length: 130000, roughness: 0.024 }] },
-      { id: 'goalpara', name: 'Goalpara Pancharatna', lat: 26.1786, lng: 90.6277, areaKm2: 130.0, elevation: 42, waterLevel: 3.8, drainageCapacity: 280, infiltrationRate: 2.8, floodThreshold: 10.2, surchargeDepth: 7.5, neighbors: [{ id: 'dhubri', width: 2200, length: 85000, roughness: 0.022 }] },
-      { id: 'dhubri', name: 'Dhubri Delta Entry', lat: 26.0208, lng: 89.9754, areaKm2: 170.0, elevation: 34, waterLevel: 4.1, drainageCapacity: 320, infiltrationRate: 2.5, floodThreshold: 11.0, surchargeDepth: 8.2, neighbors: [] },
+      { id: 'pasighat', name: 'Pasighat Entry', lat: 28.0664, lng: 95.3268, areaKm2: 80.0, elevation: 153, waterLevel: 1.8, drainageCapacity: 28, infiltrationRate: 5.0, floodThreshold: 4.2, surchargeDepth: 3.0, neighbors: [{ id: 'dibrugarh', width: 800, length: 110000, roughness: 0.030 }] },
+      { id: 'dibrugarh', name: 'Dibrugarh Dykes', lat: 27.4728, lng: 94.9120, areaKm2: 110.0, elevation: 108, waterLevel: 2.9, drainageCapacity: 26, infiltrationRate: 4.0, floodThreshold: 6.0, surchargeDepth: 4.3, neighbors: [{ id: 'tezpur', width: 1200, length: 240000, roughness: 0.028 }] },
+      { id: 'tezpur', name: 'Tezpur Kolia Bhomora', lat: 26.6528, lng: 92.7926, areaKm2: 125.0, elevation: 79, waterLevel: 3.2, drainageCapacity: 24, infiltrationRate: 3.5, floodThreshold: 6.6, surchargeDepth: 4.8, neighbors: [{ id: 'guwahati', width: 1400, length: 150000, roughness: 0.026 }] },
+      { id: 'guwahati', name: 'Guwahati Saraighat', lat: 26.1856, lng: 91.7476, areaKm2: 150.0, elevation: 55, waterLevel: 3.6, drainageCapacity: 24, infiltrationRate: 3.0, floodThreshold: 7.4, surchargeDepth: 5.4, neighbors: [{ id: 'goalpara', width: 1800, length: 130000, roughness: 0.024 }] },
+      { id: 'goalpara', name: 'Goalpara Pancharatna', lat: 26.1786, lng: 90.6277, areaKm2: 130.0, elevation: 42, waterLevel: 3.8, drainageCapacity: 22, infiltrationRate: 2.8, floodThreshold: 7.8, surchargeDepth: 5.8, neighbors: [{ id: 'dhubri', width: 2200, length: 85000, roughness: 0.022 }] },
+      { id: 'dhubri', name: 'Dhubri Delta Entry', lat: 26.0208, lng: 89.9754, areaKm2: 170.0, elevation: 34, waterLevel: 3.8, drainageCapacity: 65, infiltrationRate: 2.5, floodThreshold: 8.8, surchargeDepth: 6.4, neighbors: [] },
     ],
   },
 
@@ -487,12 +487,12 @@ const BASINS = {
       [21.7051, 72.9959], // Bharuch Estuary (Gulf of Khambhat)
     ],
     regions: [
-      { id: 'amarkantak', name: 'Amarkantak Source', lat: 22.6734, lng: 81.7588, areaKm2: 30.0, elevation: 1048, waterLevel: 0.8, drainageCapacity: 75, infiltrationRate: 8, floodThreshold: 3.5, surchargeDepth: 2.2, neighbors: [{ id: 'jabalpur', width: 85, length: 210000, roughness: 0.038 }] },
-      { id: 'jabalpur', name: 'Jabalpur Bhedaghat', lat: 23.1290, lng: 79.8000, areaKm2: 65.0, elevation: 411, waterLevel: 1.5, drainageCapacity: 95, infiltrationRate: 5, floodThreshold: 6.0, surchargeDepth: 4.0, neighbors: [{ id: 'hoshangabad', width: 160, length: 230000, roughness: 0.034 }] },
-      { id: 'hoshangabad', name: 'Narmadapuram Sethani Ghat', lat: 22.7533, lng: 77.7249, areaKm2: 85.0, elevation: 298, waterLevel: 2.2, drainageCapacity: 125, infiltrationRate: 4, floodThreshold: 8.5, surchargeDepth: 6.0, neighbors: [{ id: 'omkareshwar', width: 220, length: 190000, roughness: 0.032 }] },
-      { id: 'omkareshwar', name: 'Omkareshwar Island', lat: 22.2435, lng: 76.1500, areaKm2: 90.0, elevation: 199, waterLevel: 2.4, drainageCapacity: 140, infiltrationRate: 3.8, floodThreshold: 9.0, surchargeDepth: 6.5, neighbors: [{ id: 'garudeshwar', width: 340, length: 260000, roughness: 0.030 }] },
-      { id: 'garudeshwar', name: 'Garudeshwar Weir', lat: 21.8322, lng: 73.7489, areaKm2: 120.0, elevation: 48, waterLevel: 2.8, drainageCapacity: 180, infiltrationRate: 3.0, floodThreshold: 10.2, surchargeDepth: 7.5, neighbors: [{ id: 'bharuch', width: 550, length: 95000, roughness: 0.026 }] },
-      { id: 'bharuch', name: 'Bharuch Golden Bridge', lat: 21.7051, lng: 72.9959, areaKm2: 140.0, elevation: 15, waterLevel: 3.1, drainageCapacity: 230, infiltrationRate: 2.5, floodThreshold: 11.5, surchargeDepth: 8.5, neighbors: [] },
+      { id: 'amarkantak', name: 'Amarkantak Source', lat: 22.6734, lng: 81.7588, areaKm2: 30.0, elevation: 1048, waterLevel: 0.8, drainageCapacity: 28, infiltrationRate: 6.0, floodThreshold: 2.5, surchargeDepth: 1.7, neighbors: [{ id: 'jabalpur', width: 85, length: 210000, roughness: 0.038 }] },
+      { id: 'jabalpur', name: 'Jabalpur Bhedaghat', lat: 23.1290, lng: 79.8000, areaKm2: 65.0, elevation: 411, waterLevel: 1.5, drainageCapacity: 26, infiltrationRate: 4.5, floodThreshold: 4.0, surchargeDepth: 2.8, neighbors: [{ id: 'hoshangabad', width: 160, length: 230000, roughness: 0.034 }] },
+      { id: 'hoshangabad', name: 'Narmadapuram Sethani Ghat', lat: 22.7533, lng: 77.7249, areaKm2: 85.0, elevation: 298, waterLevel: 2.2, drainageCapacity: 24, infiltrationRate: 3.8, floodThreshold: 5.4, surchargeDepth: 3.8, neighbors: [{ id: 'omkareshwar', width: 220, length: 190000, roughness: 0.032 }] },
+      { id: 'omkareshwar', name: 'Omkareshwar Island', lat: 22.2435, lng: 76.1500, areaKm2: 90.0, elevation: 199, waterLevel: 2.4, drainageCapacity: 22, infiltrationRate: 3.5, floodThreshold: 5.8, surchargeDepth: 4.1, neighbors: [{ id: 'garudeshwar', width: 340, length: 260000, roughness: 0.030 }] },
+      { id: 'garudeshwar', name: 'Garudeshwar Weir', lat: 21.8322, lng: 73.7489, areaKm2: 120.0, elevation: 48, waterLevel: 2.8, drainageCapacity: 22, infiltrationRate: 3.0, floodThreshold: 6.5, surchargeDepth: 4.6, neighbors: [{ id: 'bharuch', width: 550, length: 95000, roughness: 0.026 }] },
+      { id: 'bharuch', name: 'Bharuch Golden Bridge', lat: 21.7051, lng: 72.9959, areaKm2: 140.0, elevation: 15, waterLevel: 3.1, drainageCapacity: 45, infiltrationRate: 2.5, floodThreshold: 7.2, surchargeDepth: 5.2, neighbors: [] },
     ],
   },
 
@@ -513,11 +513,11 @@ const BASINS = {
       [16.9891, 81.7840], // Rajahmundry Dowleswaram Barrage
     ],
     regions: [
-      { id: 'nashik', name: 'Nashik Ramkund', lat: 19.9975, lng: 73.7898, areaKm2: 40.0, elevation: 585, waterLevel: 1.1, drainageCapacity: 80, infiltrationRate: 6, floodThreshold: 4.8, surchargeDepth: 3.0, neighbors: [{ id: 'kopargaon', width: 95, length: 85000, roughness: 0.035 }] },
-      { id: 'kopargaon', name: 'Kopargaon Weir', lat: 19.8821, lng: 74.4789, areaKm2: 55.0, elevation: 492, waterLevel: 1.5, drainageCapacity: 95, infiltrationRate: 4.5, floodThreshold: 5.5, surchargeDepth: 3.8, neighbors: [{ id: 'nanded', width: 220, length: 340000, roughness: 0.032 }] },
-      { id: 'nanded', name: 'Nanded Sachkhand Ghat', lat: 19.1526, lng: 77.3196, areaKm2: 85.0, elevation: 355, waterLevel: 2.3, drainageCapacity: 130, infiltrationRate: 3.5, floodThreshold: 7.8, surchargeDepth: 5.4, neighbors: [{ id: 'bhadrachalam', width: 480, length: 420000, roughness: 0.029 }] },
-      { id: 'bhadrachalam', name: 'Bhadrachalam Temple Ghat', lat: 17.6688, lng: 80.8936, areaKm2: 120.0, elevation: 62, waterLevel: 3.2, drainageCapacity: 175, infiltrationRate: 3.0, floodThreshold: 9.8, surchargeDepth: 7.0, neighbors: [{ id: 'rajahmundry', width: 850, length: 145000, roughness: 0.026 }] },
-      { id: 'rajahmundry', name: 'Rajahmundry Dowleswaram', lat: 16.9891, lng: 81.7840, areaKm2: 160.0, elevation: 18, waterLevel: 2.9, drainageCapacity: 250, infiltrationRate: 2.5, floodThreshold: 11.2, surchargeDepth: 8.0, neighbors: [] },
+      { id: 'nashik', name: 'Nashik Ramkund', lat: 19.9975, lng: 73.7898, areaKm2: 40.0, elevation: 585, waterLevel: 1.1, drainageCapacity: 28, infiltrationRate: 5.5, floodThreshold: 3.2, surchargeDepth: 2.2, neighbors: [{ id: 'kopargaon', width: 95, length: 85000, roughness: 0.035 }] },
+      { id: 'kopargaon', name: 'Kopargaon Weir', lat: 19.8821, lng: 74.4789, areaKm2: 55.0, elevation: 492, waterLevel: 1.5, drainageCapacity: 26, infiltrationRate: 4.2, floodThreshold: 4.0, surchargeDepth: 2.8, neighbors: [{ id: 'nanded', width: 220, length: 340000, roughness: 0.032 }] },
+      { id: 'nanded', name: 'Nanded Sachkhand Ghat', lat: 19.1526, lng: 77.3196, areaKm2: 85.0, elevation: 355, waterLevel: 2.3, drainageCapacity: 23, infiltrationRate: 3.5, floodThreshold: 5.5, surchargeDepth: 3.9, neighbors: [{ id: 'bhadrachalam', width: 480, length: 420000, roughness: 0.029 }] },
+      { id: 'bhadrachalam', name: 'Bhadrachalam Temple Ghat', lat: 17.6688, lng: 80.8936, areaKm2: 120.0, elevation: 62, waterLevel: 3.2, drainageCapacity: 21, infiltrationRate: 3.0, floodThreshold: 7.0, surchargeDepth: 5.0, neighbors: [{ id: 'rajahmundry', width: 850, length: 145000, roughness: 0.026 }] },
+      { id: 'rajahmundry', name: 'Rajahmundry Dowleswaram', lat: 16.9891, lng: 81.7840, areaKm2: 160.0, elevation: 18, waterLevel: 2.9, drainageCapacity: 45, infiltrationRate: 2.5, floodThreshold: 6.8, surchargeDepth: 4.8, neighbors: [] },
     ],
   },
 
@@ -538,11 +538,11 @@ const BASINS = {
       [16.5062, 80.6480], // Vijayawada Prakasam Barrage
     ],
     regions: [
-      { id: 'mahabaleshwar', name: 'Mahabaleshwar Source', lat: 17.9237, lng: 73.6586, areaKm2: 28.0, elevation: 1353, waterLevel: 0.9, drainageCapacity: 70, infiltrationRate: 9, floodThreshold: 3.8, surchargeDepth: 2.4, neighbors: [{ id: 'sangli', width: 90, length: 145000, roughness: 0.036 }] },
-      { id: 'sangli', name: 'Sangli Irwin Bridge', lat: 16.8524, lng: 74.5815, areaKm2: 75.0, elevation: 549, waterLevel: 2.1, drainageCapacity: 110, infiltrationRate: 4, floodThreshold: 7.2, surchargeDepth: 5.0, neighbors: [{ id: 'almatti', width: 240, length: 165000, roughness: 0.032 }] },
-      { id: 'almatti', name: 'Almatti Tailrace', lat: 16.3317, lng: 75.8883, areaKm2: 95.0, elevation: 519, waterLevel: 2.4, drainageCapacity: 140, infiltrationRate: 3.5, floodThreshold: 8.5, surchargeDepth: 6.0, neighbors: [{ id: 'srisailam', width: 380, length: 330000, roughness: 0.030 }] },
-      { id: 'srisailam', name: 'Srisailam Gorge', lat: 16.0886, lng: 78.8970, areaKm2: 130.0, elevation: 270, waterLevel: 3.1, drainageCapacity: 190, infiltrationRate: 3.0, floodThreshold: 10.4, surchargeDepth: 7.5, neighbors: [{ id: 'vijayawada', width: 750, length: 210000, roughness: 0.026 }] },
-      { id: 'vijayawada', name: 'Vijayawada Prakasam Barrage', lat: 16.5062, lng: 80.6480, areaKm2: 170.0, elevation: 22, waterLevel: 3.0, drainageCapacity: 260, infiltrationRate: 2.5, floodThreshold: 11.8, surchargeDepth: 8.5, neighbors: [] },
+      { id: 'mahabaleshwar', name: 'Mahabaleshwar Source', lat: 17.9237, lng: 73.6586, areaKm2: 28.0, elevation: 1353, waterLevel: 0.9, drainageCapacity: 28, infiltrationRate: 6.0, floodThreshold: 2.7, surchargeDepth: 1.8, neighbors: [{ id: 'sangli', width: 90, length: 145000, roughness: 0.036 }] },
+      { id: 'sangli', name: 'Sangli Irwin Bridge', lat: 16.8524, lng: 74.5815, areaKm2: 75.0, elevation: 549, waterLevel: 2.1, drainageCapacity: 24, infiltrationRate: 4.0, floodThreshold: 5.2, surchargeDepth: 3.6, neighbors: [{ id: 'almatti', width: 240, length: 165000, roughness: 0.032 }] },
+      { id: 'almatti', name: 'Almatti Tailrace', lat: 16.3317, lng: 75.8883, areaKm2: 95.0, elevation: 519, waterLevel: 2.4, drainageCapacity: 22, infiltrationRate: 3.5, floodThreshold: 5.8, surchargeDepth: 4.1, neighbors: [{ id: 'srisailam', width: 380, length: 330000, roughness: 0.030 }] },
+      { id: 'srisailam', name: 'Srisailam Gorge', lat: 16.0886, lng: 78.8970, areaKm2: 130.0, elevation: 270, waterLevel: 3.1, drainageCapacity: 21, infiltrationRate: 3.0, floodThreshold: 6.9, surchargeDepth: 4.9, neighbors: [{ id: 'vijayawada', width: 750, length: 210000, roughness: 0.026 }] },
+      { id: 'vijayawada', name: 'Vijayawada Prakasam Barrage', lat: 16.5062, lng: 80.6480, areaKm2: 170.0, elevation: 22, waterLevel: 3.0, drainageCapacity: 45, infiltrationRate: 2.5, floodThreshold: 6.8, surchargeDepth: 4.8, neighbors: [] },
     ],
   },
 
@@ -582,11 +582,11 @@ const BASINS = {
       [21.7051, 72.9959], // Bharuch City & Golden Bridge
     ],
     regions: [
-      { id: 'ss-reservoir', name: 'Reservoir Deep Pool', lat: 21.8500, lng: 73.8500, areaKm2: 375.0, elevation: 138, waterLevel: 0.4, drainageCapacity: 50, infiltrationRate: 2, floodThreshold: 1.8, surchargeDepth: 1.2, isReservoir: true, neighbors: [{ id: 'ss-spillway', width: 850, length: 10500, roughness: 0.020 }] },
-      { id: 'ss-spillway', name: 'Main Spillway Chute', lat: 21.8322, lng: 73.7489, areaKm2: 45.0, elevation: 105, waterLevel: 1.2, drainageCapacity: 250, infiltrationRate: 1, floodThreshold: 6.5, surchargeDepth: 4.5, isSpillway: true, neighbors: [{ id: 'garudeshwar-weir', width: 650, length: 7500, roughness: 0.025 }] },
-      { id: 'garudeshwar-weir', name: 'Garudeshwar Weir', lat: 21.8150, lng: 73.6800, areaKm2: 35.0, elevation: 52, waterLevel: 1.5, drainageCapacity: 140, infiltrationRate: 3, floodThreshold: 6.8, surchargeDepth: 4.8, neighbors: [{ id: 'tilakwada', width: 500, length: 18000, roughness: 0.028 }] },
-      { id: 'tilakwada', name: 'Tilakwada Ghat', lat: 21.7800, lng: 73.5500, areaKm2: 40.0, elevation: 36, waterLevel: 1.8, drainageCapacity: 130, infiltrationRate: 3.5, floodThreshold: 7.5, surchargeDepth: 5.2, neighbors: [{ id: 'bharuch-port', width: 620, length: 65000, roughness: 0.028 }] },
-      { id: 'bharuch-port', name: 'Bharuch Vulnerable Delta', lat: 21.7051, lng: 72.9959, areaKm2: 95.0, elevation: 15, waterLevel: 2.2, drainageCapacity: 160, infiltrationRate: 2.5, floodThreshold: 8.5, surchargeDepth: 6.0, neighbors: [] },
+      { id: 'ss-reservoir', name: 'Reservoir Deep Pool', lat: 21.8500, lng: 73.8500, areaKm2: 375.0, elevation: 138, waterLevel: 0.4, drainageCapacity: 28, infiltrationRate: 2.0, floodThreshold: 1.6, surchargeDepth: 1.1, isReservoir: true, neighbors: [{ id: 'ss-spillway', width: 850, length: 10500, roughness: 0.020 }] },
+      { id: 'ss-spillway', name: 'Main Spillway Chute', lat: 21.8322, lng: 73.7489, areaKm2: 45.0, elevation: 105, waterLevel: 1.2, drainageCapacity: 55, infiltrationRate: 1.5, floodThreshold: 3.5, surchargeDepth: 2.4, isSpillway: true, neighbors: [{ id: 'garudeshwar-weir', width: 650, length: 7500, roughness: 0.025 }] },
+      { id: 'garudeshwar-weir', name: 'Garudeshwar Weir', lat: 21.8150, lng: 73.6800, areaKm2: 35.0, elevation: 52, waterLevel: 1.5, drainageCapacity: 26, infiltrationRate: 3.0, floodThreshold: 4.2, surchargeDepth: 2.9, neighbors: [{ id: 'tilakwada', width: 500, length: 18000, roughness: 0.028 }] },
+      { id: 'tilakwada', name: 'Tilakwada Ghat', lat: 21.7800, lng: 73.5500, areaKm2: 40.0, elevation: 36, waterLevel: 1.8, drainageCapacity: 24, infiltrationRate: 3.5, floodThreshold: 4.8, surchargeDepth: 3.3, neighbors: [{ id: 'bharuch-port', width: 620, length: 65000, roughness: 0.028 }] },
+      { id: 'bharuch-port', name: 'Bharuch Vulnerable Delta', lat: 21.7051, lng: 72.9959, areaKm2: 95.0, elevation: 15, waterLevel: 2.2, drainageCapacity: 35, infiltrationRate: 2.5, floodThreshold: 5.6, surchargeDepth: 3.9, neighbors: [] },
     ],
   },
 
@@ -622,11 +622,11 @@ const BASINS = {
       [29.9457, 78.1642], // Haridwar Bhimgoda Barrage
     ],
     regions: [
-      { id: 'tehri-reservoir', name: 'Tehri Lake Pool', lat: 30.4200, lng: 78.5300, areaKm2: 52.0, elevation: 830, waterLevel: 0.5, drainageCapacity: 60, infiltrationRate: 2, floodThreshold: 2.0, surchargeDepth: 1.4, isReservoir: true, neighbors: [{ id: 'tehri-chute', width: 220, length: 7000, roughness: 0.022 }] },
-      { id: 'tehri-chute', name: 'Chute Spillway Tailrace', lat: 30.3781, lng: 78.4806, areaKm2: 25.0, elevation: 590, waterLevel: 1.2, drainageCapacity: 220, infiltrationRate: 1.5, floodThreshold: 6.0, surchargeDepth: 4.2, isSpillway: true, neighbors: [{ id: 'devprayag-sangam', width: 140, length: 32000, roughness: 0.035 }] },
-      { id: 'devprayag-sangam', name: 'Devprayag Sangam', lat: 30.1458, lng: 78.5989, areaKm2: 30.0, elevation: 472, waterLevel: 1.8, drainageCapacity: 120, infiltrationRate: 4, floodThreshold: 6.8, surchargeDepth: 4.6, neighbors: [{ id: 'rishikesh-ghat', width: 180, length: 35000, roughness: 0.032 }] },
-      { id: 'rishikesh-ghat', name: 'Rishikesh Triveni Ghat', lat: 30.0869, lng: 78.2676, areaKm2: 42.0, elevation: 356, waterLevel: 2.1, drainageCapacity: 140, infiltrationRate: 5, floodThreshold: 7.4, surchargeDepth: 5.2, neighbors: [{ id: 'haridwar-bhimgoda', width: 260, length: 24000, roughness: 0.030 }] },
-      { id: 'haridwar-bhimgoda', name: 'Haridwar Bhimgoda Barrage', lat: 29.9457, lng: 78.1642, areaKm2: 58.0, elevation: 314, waterLevel: 2.4, drainageCapacity: 170, infiltrationRate: 6, floodThreshold: 8.2, surchargeDepth: 5.8, neighbors: [] },
+      { id: 'tehri-reservoir', name: 'Tehri Lake Pool', lat: 30.4200, lng: 78.5300, areaKm2: 52.0, elevation: 830, waterLevel: 0.5, drainageCapacity: 28, infiltrationRate: 2.0, floodThreshold: 1.8, surchargeDepth: 1.2, isReservoir: true, neighbors: [{ id: 'tehri-chute', width: 220, length: 7000, roughness: 0.022 }] },
+      { id: 'tehri-chute', name: 'Chute Spillway Tailrace', lat: 30.3781, lng: 78.4806, areaKm2: 25.0, elevation: 590, waterLevel: 1.2, drainageCapacity: 50, infiltrationRate: 1.5, floodThreshold: 3.4, surchargeDepth: 2.3, isSpillway: true, neighbors: [{ id: 'devprayag-sangam', width: 140, length: 32000, roughness: 0.035 }] },
+      { id: 'devprayag-sangam', name: 'Devprayag Sangam', lat: 30.1458, lng: 78.5989, areaKm2: 30.0, elevation: 472, waterLevel: 1.8, drainageCapacity: 26, infiltrationRate: 3.5, floodThreshold: 4.6, surchargeDepth: 3.2, neighbors: [{ id: 'rishikesh-ghat', width: 180, length: 35000, roughness: 0.032 }] },
+      { id: 'rishikesh-ghat', name: 'Rishikesh Triveni Ghat', lat: 30.0869, lng: 78.2676, areaKm2: 42.0, elevation: 356, waterLevel: 2.1, drainageCapacity: 24, infiltrationRate: 4.0, floodThreshold: 5.2, surchargeDepth: 3.6, neighbors: [{ id: 'haridwar-bhimgoda', width: 260, length: 24000, roughness: 0.030 }] },
+      { id: 'haridwar-bhimgoda', name: 'Haridwar Bhimgoda Barrage', lat: 29.9457, lng: 78.1642, areaKm2: 58.0, elevation: 314, waterLevel: 2.4, drainageCapacity: 32, infiltrationRate: 4.5, floodThreshold: 5.8, surchargeDepth: 4.0, neighbors: [] },
     ],
   },
 
@@ -662,11 +662,11 @@ const BASINS = {
       [20.4625, 85.8828], // Cuttack Naraj Barrage
     ],
     regions: [
-      { id: 'hirakud-pool', name: 'Hirakud Reservoir Pool', lat: 21.5800, lng: 83.7500, areaKm2: 743.0, elevation: 192, waterLevel: 0.6, drainageCapacity: 65, infiltrationRate: 2, floodThreshold: 2.2, surchargeDepth: 1.5, isReservoir: true, neighbors: [{ id: 'hirakud-spillway', width: 1100, length: 14000, roughness: 0.022 }] },
-      { id: 'hirakud-spillway', name: 'Left & Right Crest Gates', lat: 21.5284, lng: 83.8690, areaKm2: 55.0, elevation: 160, waterLevel: 1.4, drainageCapacity: 260, infiltrationRate: 1.5, floodThreshold: 6.5, surchargeDepth: 4.5, isSpillway: true, neighbors: [{ id: 'sambalpur-ghat', width: 750, length: 12000, roughness: 0.026 }] },
-      { id: 'sambalpur-ghat', name: 'Sambalpur Ghats', lat: 21.4669, lng: 83.9812, areaKm2: 65.0, elevation: 145, waterLevel: 2.0, drainageCapacity: 150, infiltrationRate: 3.5, floodThreshold: 7.2, surchargeDepth: 5.0, neighbors: [{ id: 'sonepur', width: 900, length: 78000, roughness: 0.028 }] },
-      { id: 'sonepur', name: 'Sonepur Tel Confluence', lat: 20.8400, lng: 83.9100, areaKm2: 85.0, elevation: 115, waterLevel: 2.6, drainageCapacity: 180, infiltrationRate: 3.0, floodThreshold: 8.8, surchargeDepth: 6.2, neighbors: [{ id: 'cuttack-naraj', width: 1200, length: 180000, roughness: 0.025 }] },
-      { id: 'cuttack-naraj', name: 'Cuttack Naraj Delta Barrage', lat: 20.4625, lng: 85.8828, areaKm2: 140.0, elevation: 32, waterLevel: 3.0, drainageCapacity: 240, infiltrationRate: 2.2, floodThreshold: 10.5, surchargeDepth: 7.8, neighbors: [] },
+      { id: 'hirakud-pool', name: 'Hirakud Reservoir Pool', lat: 21.5800, lng: 83.7500, areaKm2: 743.0, elevation: 192, waterLevel: 0.6, drainageCapacity: 30, infiltrationRate: 2.0, floodThreshold: 1.9, surchargeDepth: 1.3, isReservoir: true, neighbors: [{ id: 'hirakud-spillway', width: 1100, length: 14000, roughness: 0.022 }] },
+      { id: 'hirakud-spillway', name: 'Left & Right Crest Gates', lat: 21.5284, lng: 83.8690, areaKm2: 55.0, elevation: 160, waterLevel: 1.4, drainageCapacity: 55, infiltrationRate: 1.5, floodThreshold: 3.6, surchargeDepth: 2.5, isSpillway: true, neighbors: [{ id: 'sambalpur-ghat', width: 750, length: 12000, roughness: 0.026 }] },
+      { id: 'sambalpur-ghat', name: 'Sambalpur Ghats', lat: 21.4669, lng: 83.9812, areaKm2: 65.0, elevation: 145, waterLevel: 2.0, drainageCapacity: 25, infiltrationRate: 3.2, floodThreshold: 5.0, surchargeDepth: 3.5, neighbors: [{ id: 'sonepur', width: 900, length: 78000, roughness: 0.028 }] },
+      { id: 'sonepur', name: 'Sonepur Tel Confluence', lat: 20.8400, lng: 83.9100, areaKm2: 85.0, elevation: 115, waterLevel: 2.6, drainageCapacity: 23, infiltrationRate: 3.0, floodThreshold: 6.2, surchargeDepth: 4.3, neighbors: [{ id: 'cuttack-naraj', width: 1200, length: 180000, roughness: 0.025 }] },
+      { id: 'cuttack-naraj', name: 'Cuttack Naraj Delta Barrage', lat: 20.4625, lng: 85.8828, areaKm2: 140.0, elevation: 32, waterLevel: 3.0, drainageCapacity: 35, infiltrationRate: 2.2, floodThreshold: 7.0, surchargeDepth: 4.9, neighbors: [] },
     ],
   },
 
@@ -702,11 +702,11 @@ const BASINS = {
       [9.9816, 76.2999], // Kochi Estuary / Arabian Sea
     ],
     regions: [
-      { id: 'idukki-reservoir', name: 'Idukki Arch Reservoir', lat: 9.8600, lng: 77.0200, areaKm2: 60.0, elevation: 732, waterLevel: 0.5, drainageCapacity: 50, infiltrationRate: 3, floodThreshold: 1.8, surchargeDepth: 1.2, isReservoir: true, neighbors: [{ id: 'cheruthoni-spillway', width: 280, length: 5000, roughness: 0.024 }] },
-      { id: 'cheruthoni-spillway', name: 'Cheruthoni 5-Radial Gates', lat: 9.8499, lng: 76.9725, areaKm2: 20.0, elevation: 680, waterLevel: 1.1, drainageCapacity: 210, infiltrationRate: 2, floodThreshold: 5.5, surchargeDepth: 3.8, isSpillway: true, neighbors: [{ id: 'thadiyampadu', width: 160, length: 9000, roughness: 0.038 }] },
-      { id: 'thadiyampadu', name: 'Thadiyampadu Bridge', lat: 9.8750, lng: 76.9200, areaKm2: 32.0, elevation: 420, waterLevel: 1.7, drainageCapacity: 110, infiltrationRate: 4, floodThreshold: 6.5, surchargeDepth: 4.4, neighbors: [{ id: 'aluwa-manappuram', width: 240, length: 65000, roughness: 0.030 }] },
-      { id: 'aluwa-manappuram', name: 'Aluva Manappuram Ghat', lat: 10.1076, lng: 76.3516, areaKm2: 55.0, elevation: 12, waterLevel: 2.5, drainageCapacity: 140, infiltrationRate: 3.5, floodThreshold: 7.8, surchargeDepth: 5.5, neighbors: [{ id: 'kochi-backwaters', width: 450, length: 22000, roughness: 0.026 }] },
-      { id: 'kochi-backwaters', name: 'Kochi Backwaters Estuary', lat: 9.9816, lng: 76.2999, areaKm2: 85.0, elevation: 2, waterLevel: 2.1, drainageCapacity: 190, infiltrationRate: 3.0, floodThreshold: 8.5, surchargeDepth: 6.2, neighbors: [] },
+      { id: 'idukki-reservoir', name: 'Idukki Arch Reservoir', lat: 9.8600, lng: 77.0200, areaKm2: 60.0, elevation: 732, waterLevel: 0.5, drainageCapacity: 26, infiltrationRate: 2.5, floodThreshold: 1.8, surchargeDepth: 1.2, isReservoir: true, neighbors: [{ id: 'cheruthoni-spillway', width: 280, length: 5000, roughness: 0.024 }] },
+      { id: 'cheruthoni-spillway', name: 'Cheruthoni 5-Radial Gates', lat: 9.8499, lng: 76.9725, areaKm2: 20.0, elevation: 680, waterLevel: 1.1, drainageCapacity: 50, infiltrationRate: 1.8, floodThreshold: 3.2, surchargeDepth: 2.2, isSpillway: true, neighbors: [{ id: 'thadiyampadu', width: 160, length: 9000, roughness: 0.038 }] },
+      { id: 'thadiyampadu', name: 'Thadiyampadu Bridge', lat: 9.8750, lng: 76.9200, areaKm2: 32.0, elevation: 420, waterLevel: 1.7, drainageCapacity: 24, infiltrationRate: 3.5, floodThreshold: 4.5, surchargeDepth: 3.1, neighbors: [{ id: 'aluwa-manappuram', width: 240, length: 65000, roughness: 0.030 }] },
+      { id: 'aluwa-manappuram', name: 'Aluva Manappuram Ghat', lat: 10.1076, lng: 76.3516, areaKm2: 55.0, elevation: 12, waterLevel: 2.5, drainageCapacity: 22, infiltrationRate: 3.0, floodThreshold: 5.8, surchargeDepth: 4.0, neighbors: [{ id: 'kochi-backwaters', width: 450, length: 22000, roughness: 0.026 }] },
+      { id: 'kochi-backwaters', name: 'Kochi Backwaters Estuary', lat: 9.9816, lng: 76.2999, areaKm2: 85.0, elevation: 2, waterLevel: 2.1, drainageCapacity: 40, infiltrationRate: 2.8, floodThreshold: 5.4, surchargeDepth: 3.7, neighbors: [] },
     ],
   },
 
@@ -742,11 +742,11 @@ const BASINS = {
       [16.8524, 74.5815], // Sangli Irwin Bridge
     ],
     regions: [
-      { id: 'koyna-reservoir', name: 'Shivajisagar Reservoir', lat: 17.4800, lng: 73.7200, areaKm2: 115.0, elevation: 658, waterLevel: 0.5, drainageCapacity: 55, infiltrationRate: 3, floodThreshold: 1.8, surchargeDepth: 1.2, isReservoir: true, neighbors: [{ id: 'koyna-spillway', width: 350, length: 11000, roughness: 0.022 }] },
-      { id: 'koyna-spillway', name: 'Koyna 6-Radial Spillway', lat: 17.4000, lng: 73.7500, areaKm2: 30.0, elevation: 615, waterLevel: 1.3, drainageCapacity: 230, infiltrationRate: 1.5, floodThreshold: 6.0, surchargeDepth: 4.0, isSpillway: true, neighbors: [{ id: 'patan-ghat', width: 180, length: 14000, roughness: 0.034 }] },
-      { id: 'patan-ghat', name: 'Patan Koyna Bridge', lat: 17.3800, lng: 73.8500, areaKm2: 45.0, elevation: 580, waterLevel: 1.8, drainageCapacity: 120, infiltrationRate: 4, floodThreshold: 6.8, surchargeDepth: 4.8, neighbors: [{ id: 'karad-sangam', width: 280, length: 38000, roughness: 0.032 }] },
-      { id: 'karad-sangam', name: 'Karad Preeti Sangam', lat: 17.2890, lng: 74.1816, areaKm2: 60.0, elevation: 562, waterLevel: 2.2, drainageCapacity: 140, infiltrationRate: 3.8, floodThreshold: 7.5, surchargeDepth: 5.2, neighbors: [{ id: 'sangli-bridge', width: 420, length: 58000, roughness: 0.028 }] },
-      { id: 'sangli-bridge', name: 'Sangli Flood Plain', lat: 16.8524, lng: 74.5815, areaKm2: 85.0, elevation: 545, waterLevel: 2.8, drainageCapacity: 160, infiltrationRate: 3.0, floodThreshold: 8.8, surchargeDepth: 6.2, neighbors: [] },
+      { id: 'koyna-reservoir', name: 'Shivajisagar Reservoir', lat: 17.4800, lng: 73.7200, areaKm2: 115.0, elevation: 658, waterLevel: 0.5, drainageCapacity: 28, infiltrationRate: 2.5, floodThreshold: 1.8, surchargeDepth: 1.2, isReservoir: true, neighbors: [{ id: 'koyna-spillway', width: 350, length: 11000, roughness: 0.022 }] },
+      { id: 'koyna-spillway', name: 'Koyna 6-Radial Spillway', lat: 17.4000, lng: 73.7500, areaKm2: 30.0, elevation: 615, waterLevel: 1.3, drainageCapacity: 50, infiltrationRate: 1.5, floodThreshold: 3.4, surchargeDepth: 2.3, isSpillway: true, neighbors: [{ id: 'patan-ghat', width: 180, length: 14000, roughness: 0.034 }] },
+      { id: 'patan-ghat', name: 'Patan Koyna Bridge', lat: 17.3800, lng: 73.8500, areaKm2: 45.0, elevation: 580, waterLevel: 1.8, drainageCapacity: 25, infiltrationRate: 3.5, floodThreshold: 4.7, surchargeDepth: 3.2, neighbors: [{ id: 'karad-sangam', width: 280, length: 38000, roughness: 0.032 }] },
+      { id: 'karad-sangam', name: 'Karad Preeti Sangam', lat: 17.2890, lng: 74.1816, areaKm2: 60.0, elevation: 562, waterLevel: 2.2, drainageCapacity: 23, infiltrationRate: 3.2, floodThreshold: 5.4, surchargeDepth: 3.8, neighbors: [{ id: 'sangli-bridge', width: 420, length: 58000, roughness: 0.028 }] },
+      { id: 'sangli-bridge', name: 'Sangli Flood Plain', lat: 16.8524, lng: 74.5815, areaKm2: 85.0, elevation: 545, waterLevel: 2.8, drainageCapacity: 35, infiltrationRate: 2.8, floodThreshold: 6.6, surchargeDepth: 4.6, neighbors: [] },
     ],
   },
 
@@ -782,11 +782,11 @@ const BASINS = {
       [16.5062, 80.6480], // Vijayawada Prakasam Barrage
     ],
     regions: [
-      { id: 'ns-reservoir', name: 'Nagarjuna Sagar Reservoir', lat: 16.6500, lng: 79.2000, areaKm2: 285.0, elevation: 180, waterLevel: 0.6, drainageCapacity: 60, infiltrationRate: 2, floodThreshold: 2.0, surchargeDepth: 1.4, isReservoir: true, neighbors: [{ id: 'ns-spillway', width: 900, length: 15000, roughness: 0.022 }] },
-      { id: 'ns-spillway', name: '26 Radial Crest Gates', lat: 16.5786, lng: 79.3130, areaKm2: 45.0, elevation: 140, waterLevel: 1.3, drainageCapacity: 270, infiltrationRate: 1.5, floodThreshold: 6.8, surchargeDepth: 4.8, isSpillway: true, neighbors: [{ id: 'wadapally', width: 550, length: 38000, roughness: 0.030 }] },
-      { id: 'wadapally', name: 'Wadapally Sangam', lat: 16.7100, lng: 79.6200, areaKm2: 65.0, elevation: 85, waterLevel: 2.1, drainageCapacity: 140, infiltrationRate: 3.5, floodThreshold: 7.6, surchargeDepth: 5.4, neighbors: [{ id: 'amaravati-ghat', width: 680, length: 82000, roughness: 0.028 }] },
-      { id: 'amaravati-ghat', name: 'Amaravati Capital Riverfront', lat: 16.5750, lng: 80.3550, areaKm2: 85.0, elevation: 34, waterLevel: 2.6, drainageCapacity: 160, infiltrationRate: 3.0, floodThreshold: 8.5, surchargeDepth: 6.0, neighbors: [{ id: 'prakasam-barrage', width: 850, length: 35000, roughness: 0.025 }] },
-      { id: 'prakasam-barrage', name: 'Prakasam Barrage Vijayawada', lat: 16.5062, lng: 80.6480, areaKm2: 120.0, elevation: 22, waterLevel: 3.1, drainageCapacity: 220, infiltrationRate: 2.5, floodThreshold: 10.2, surchargeDepth: 7.5, neighbors: [] },
+      { id: 'ns-reservoir', name: 'Nagarjuna Sagar Reservoir', lat: 16.6500, lng: 79.2000, areaKm2: 285.0, elevation: 180, waterLevel: 0.6, drainageCapacity: 30, infiltrationRate: 2.0, floodThreshold: 1.9, surchargeDepth: 1.3, isReservoir: true, neighbors: [{ id: 'ns-spillway', width: 900, length: 15000, roughness: 0.022 }] },
+      { id: 'ns-spillway', name: '26 Radial Crest Gates', lat: 16.5786, lng: 79.3130, areaKm2: 45.0, elevation: 140, waterLevel: 1.3, drainageCapacity: 55, infiltrationRate: 1.5, floodThreshold: 3.5, surchargeDepth: 2.4, isSpillway: true, neighbors: [{ id: 'wadapally', width: 550, length: 38000, roughness: 0.030 }] },
+      { id: 'wadapally', name: 'Wadapally Sangam', lat: 16.7100, lng: 79.6200, areaKm2: 65.0, elevation: 85, waterLevel: 2.1, drainageCapacity: 24, infiltrationRate: 3.2, floodThreshold: 5.2, surchargeDepth: 3.6, neighbors: [{ id: 'amaravati-ghat', width: 680, length: 82000, roughness: 0.028 }] },
+      { id: 'amaravati-ghat', name: 'Amaravati Capital Riverfront', lat: 16.5750, lng: 80.3550, areaKm2: 85.0, elevation: 34, waterLevel: 2.6, drainageCapacity: 22, infiltrationRate: 3.0, floodThreshold: 6.2, surchargeDepth: 4.3, neighbors: [{ id: 'prakasam-barrage', width: 850, length: 35000, roughness: 0.025 }] },
+      { id: 'prakasam-barrage', name: 'Prakasam Barrage Vijayawada', lat: 16.5062, lng: 80.6480, areaKm2: 120.0, elevation: 22, waterLevel: 3.1, drainageCapacity: 38, infiltrationRate: 2.5, floodThreshold: 7.2, surchargeDepth: 5.0, neighbors: [] },
     ],
   },
 };

@@ -14,7 +14,7 @@ const DEFAULTS = {
   horizonHours: 6, // how far ahead we care about
   referenceRise: 0.15, // m/hr treated as a "fast" rise
   weights: { fill: 0.5, rise: 0.2, urgency: 0.3 },
-  thresholds: { watch: 35, warning: 65 },
+  thresholds: { watch: 35, warning: 65, critical: 80 },
 };
 
 /** 0 = dry, 1 = at the flood threshold, >1 = already over it. */
@@ -58,7 +58,7 @@ function riskScore({ depth, threshold, riseRate, options = {} }) {
 /** Label for a score. A region already past its threshold is always CRITICAL. */
 function riskLevel(score, depth, threshold, options = {}) {
   const t = { ...DEFAULTS.thresholds, ...(options.thresholds || {}) };
-  if (depth >= threshold) return 'CRITICAL';
+  if (depth >= threshold || (t.critical != null && score >= t.critical)) return 'CRITICAL';
   if (score >= t.warning) return 'WARNING';
   if (score >= t.watch) return 'WATCH';
   return 'SAFE';

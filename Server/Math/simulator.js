@@ -56,70 +56,28 @@ function runSimulation(inputs = {}) {
   const dtSeconds = 300;
   const stepsToRun = hour === 0 ? 1 : Math.max(2, Math.min(72, hour * 6));
 
+  // Catchment runoff concentration factor:
+  // Urban catchments have 1:1 local area.
+  // Regional river basins & dam watersheds concentrate overland tributary flows into the central channel.
+  let effectiveRainfall = rainfall;
+  const isLargeBasin = basin.category === 'national_river' || basin.category === 'dam';
+  if (isLargeBasin) {
+    const stormIntensityFactor = Math.max(1.0, rainfall / 15);
+    const catchmentKm2 = basin.catchmentAreaKm2 || 10000;
+    const concentrationMultiplier = rainfall <= 15
+      ? 1.0
+      : Math.min(3.4, 1.2 + Math.log10(catchmentKm2 / 100) * 0.40 * Math.min(1.6, stormIntensityFactor));
+    effectiveRainfall = rainfall * concentrationMultiplier;
+  }
+
   // Run physical hydrology & lateral flow steps
   for (let i = 0; i < stepsToRun; i++) {
     currentState = stepper.stepSimulation(currentState, {
       dtSeconds,
-      rainfall,
+      rainfall: effectiveRainfall,
       model: 'manning',
       relaxation: 0.5,
     });
-  }
-
-  // Assess risk against the initial pre-storm baseline to capture cumulative rise rate accurately
-  const preDepths = baseRegions.map((r) => r.waterLevel);
-  const totalElapsedSeconds = Math.max(dtSeconds, stepsToRun * dtSeconds);
-  const assessments = currentState.regions.map((r, i) =>
-    risk.assessRegion(r, preDepths[i], totalElapsedSeconds, {
-      referenceRise: 0.03, // 3 cm/h is significant in Mumbai urban catchments
-      thresholds: { watch: 22, warning: 48 },
-    })
-  );
-
-  const summary = risk.summarize(assessments);
-
-  // Match coordinates and names back to assessments
-  const enrichedRegions = assessments.map((assessment) => {
-    const base = baseRegions.find((r) => r.id === assessment.id) || {};
-    return {
-      ...assessment,
-      lat: base.lat,
-      lng: base.lng,
-      drainageCapacity: base.drainageCapacity,
-      elevation: base.elevation,
-    };
-  });
-
-  // Determine active and critical zones
-  const activeZones = assessments.filter((a) => a.level !== 'SAFE').length;
-  const criticalZones = assessments.filter((a) => a.level === 'CRITICAL').length;
-  const warningZones = assessments.filter((a) => a.level === 'WARNING').length;
-  const watchZones = assessments.filter((a) => a.level === 'WATCH').length;
-  const safeZones = assessments.filter((a) => a.level === 'SAFE').length;
-
-  // River gauge level in meters:
-  // Base 1.5m datum + dynamic response to average and bottleneck basin depths
-  const maxWaterDepth = Math.max(...assessments.map((a) => a.waterLevel));
-  const avgWaterDepth = assessments.reduce((sum, a) => sum + a.waterLevel, 0) / assessments.length;
-  const riverLevel = Number((1.5 + avgWaterDepth * 2.2 + maxWaterDepth * 1.4).toFixed(1));
-
-  // Overall risk determination
-  let overallRisk = 'SAFE';
-  if (criticalZones > 0 || summary.averageScore >= 50) {
-    overallRisk = 'CRITICAL';
-  } else if (warningZones > 0 || summary.averageScore >= 30) {
-    overallRisk = 'WARNING';
-  } else if (watchZones > 0 || summary.averageScore >= 15) {
-    overallRisk = 'WATCH';
-  }
-
-  // Calculate overflow volume (m3 exceeding flood threshold)
-  let totalOverflow = 0;
-  for (const a of assessments) {
-    const regionObj = currentState.regions.find((r) => r.id === a.id);
-    if (a.waterLevel > a.floodThreshold && regionObj) {
-      totalOverflow += (a.waterLevel - a.floodThreshold) * regionObj.area;
-    }
   }
 
   // If this system is a Dam, compute dynamic reservoir mass-balance and spillway operations
@@ -188,6 +146,84 @@ function runSimulation(inputs = {}) {
       status: damStatus,
       spillwayAlert,
     };
+
+    // Spillway discharge surcharge on downstream reaches
+    if (openGates > 0) {
+      const gateRatio = openGates / specs.gateCount;
+      const spillwaySurge = Number((gateRatio * 0.45 * Math.sqrt(Math.max(1, hour))).toFixed(4));
+      currentState.regions = currentState.regions.map((r) => {
+        if (!r.isReservoir) {
+          return {
+            ...r,
+            waterLevel: Number((r.waterLevel + spillwaySurge).toFixed(4)),
+          };
+        }
+        return r;
+      });
+    }
+  }
+
+  // Assess risk against the initial pre-storm baseline to capture cumulative rise rate accurately
+  const preDepths = baseRegions.map((r) => r.waterLevel);
+  const totalElapsedSeconds = Math.max(dtSeconds, stepsToRun * dtSeconds);
+  const assessments = currentState.regions.map((r, i) =>
+    risk.assessRegion(r, preDepths[i], totalElapsedSeconds, {
+      horizonHours: isLargeBasin ? 18 : 6,
+      referenceRise: isLargeBasin ? 0.10 : 0.03,
+      thresholds: isLargeBasin
+        ? { watch: 44, warning: 60, critical: 78 }
+        : { watch: 22, warning: 46, critical: 75 },
+    })
+  );
+
+  const summary = risk.summarize(assessments);
+
+  // Match coordinates and names back to assessments
+  const enrichedRegions = assessments.map((assessment) => {
+    const base = baseRegions.find((r) => r.id === assessment.id) || {};
+    return {
+      ...assessment,
+      lat: base.lat,
+      lng: base.lng,
+      drainageCapacity: base.drainageCapacity,
+      elevation: base.elevation,
+    };
+  });
+
+  // Determine active and critical zones
+  const activeZones = assessments.filter((a) => a.level !== 'SAFE').length;
+  const criticalZones = assessments.filter((a) => a.level === 'CRITICAL').length;
+  const warningZones = assessments.filter((a) => a.level === 'WARNING').length;
+  const watchZones = assessments.filter((a) => a.level === 'WATCH').length;
+  const safeZones = assessments.filter((a) => a.level === 'SAFE').length;
+
+  // River gauge level in meters:
+  const maxWaterDepth = Math.max(...assessments.map((a) => a.waterLevel));
+  const avgWaterDepth = assessments.reduce((sum, a) => sum + a.waterLevel, 0) / assessments.length;
+  const riverLevel = isLargeBasin
+    ? Number((avgWaterDepth * 1.5 + maxWaterDepth * 0.8).toFixed(1))
+    : Number((1.5 + avgWaterDepth * 2.2 + maxWaterDepth * 1.4).toFixed(1));
+
+  // Overall risk determination:
+  // Primary driver is active hazardous zones, with average score as secondary severity indicator.
+  let overallRisk = 'SAFE';
+  if (criticalZones > 0 || (warningZones >= 2 && summary.averageScore >= 60) || summary.averageScore >= 70) {
+    overallRisk = 'CRITICAL';
+  } else if (warningZones > 0 || (watchZones >= 2 && summary.averageScore >= (isLargeBasin ? 45 : 30)) || summary.averageScore >= 45) {
+    overallRisk = 'WARNING';
+  } else if (watchZones > 0 || activeZones > 0) {
+    overallRisk = 'WATCH';
+  } else {
+    overallRisk = 'SAFE';
+  }
+
+  // Calculate overflow volume (m3 exceeding flood threshold)
+  let totalOverflow = 0;
+  for (const a of assessments) {
+    const regionObj = currentState.regions.find((r) => r.id === a.id);
+    if (a.waterLevel > a.floodThreshold && regionObj) {
+      totalOverflow += (a.waterLevel - a.floodThreshold) * regionObj.area;
+    }
   }
 
   return {
