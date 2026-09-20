@@ -115,6 +115,20 @@
                 <div class="status-item">
 
                     <div class="status-label">
+                        BACKEND
+                    </div>
+
+                    <div class="status-value online" id="backendStatus">
+                        <span class="online-dot" id="backendDot"></span>
+                        <span id="backendStatusText">CONNECTING</span>
+                    </div>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <div class="status-label">
                         SIMULATION HOUR
                     </div>
 
@@ -720,6 +734,32 @@
                     </div>
 
 
+                    <div class="prediction-line">
+
+                        <span>
+                            Total storage:
+                        </span>
+
+                        <strong id="simulationStorage">
+                            -- m³
+                        </strong>
+
+                    </div>
+
+
+                    <div class="prediction-line">
+
+                        <span>
+                            Physics Engine:
+                        </span>
+
+                        <strong id="simulationEngine" style="color: var(--green);">
+                            CONNECTING...
+                        </strong>
+
+                    </div>
+
+
                 </div>
 
 
@@ -834,6 +874,32 @@
 
                 <strong id="inspectorRisk">
                     WATCH
+                </strong>
+
+            </div>
+
+
+            <div class="inspector-row">
+
+                <span>
+                    Water depth
+                </span>
+
+                <strong id="inspectorDepth">
+                    -- cm
+                </strong>
+
+            </div>
+
+
+            <div class="inspector-row">
+
+                <span>
+                    Risk score
+                </span>
+
+                <strong id="inspectorScore">
+                    -- / 100
                 </strong>
 
             </div>

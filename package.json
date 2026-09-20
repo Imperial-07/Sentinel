@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Server/server.js",
+    "server": "node Server/server.js",
+    "server:dev": "nodemon Server/server.js",
+    "client:dev": "cd client && npm run dev"
   },
   "repository": {
     "type": "git",

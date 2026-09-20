@@ -149,6 +149,16 @@ const regions = [
    APPLICATION STATE
 ===================================================== */
 
+const API_BASE =
+    (typeof window !== "undefined" && window.location && window.location.protocol.startsWith("http"))
+        ? `${window.location.origin}/api`
+        : "http://localhost:5001/api";
+
+let backendOnline = false;
+
+let latestSimulationData = null;
+
+let simulationDebounceTimer = null;
 
 let rainfall = 9;
 
@@ -221,6 +231,16 @@ function getRisk(
     rainfallValue,
     regionIndex
 ) {
+
+    if (
+        regions[regionIndex] &&
+        regions[regionIndex].risk
+    ) {
+
+        return regions[regionIndex].risk.toLowerCase();
+
+    }
+
 
     const regionalEffect =
         regionIndex * 0.8;
@@ -296,6 +316,16 @@ function getRiskColor(risk) {
 
 
 function calculateRiverLevel() {
+
+    if (
+        latestSimulationData &&
+        typeof latestSimulationData.riverLevel === "number"
+    ) {
+
+        return latestSimulationData.riverLevel.toFixed(1);
+
+    }
+
 
     return (
 
@@ -501,6 +531,16 @@ function updateMarkers() {
 
 function calculateStatistics() {
 
+    if (
+        latestSimulationData &&
+        latestSimulationData.stats
+    ) {
+
+        return latestSimulationData.stats;
+
+    }
+
+
     let activeZones = 0;
 
     let criticalZones = 0;
@@ -564,6 +604,16 @@ function calculateStatistics() {
 
 
 function calculateOverallRisk() {
+
+    if (
+        latestSimulationData &&
+        latestSimulationData.overallRisk
+    ) {
+
+        return latestSimulationData.overallRisk;
+
+    }
+
 
     const stats =
         calculateStatistics();
@@ -875,6 +925,56 @@ function updateDashboard() {
     }
 
 
+    const simulationStorage =
+        document.getElementById(
+            "simulationStorage"
+        );
+
+    if (simulationStorage) {
+
+        if (latestSimulationData && latestSimulationData.waterStorage != null) {
+
+            simulationStorage.textContent =
+                `${Number(latestSimulationData.waterStorage).toLocaleString()} m³`;
+
+        } else {
+
+            simulationStorage.textContent =
+                `${Number((rainfall * 1540).toFixed(0)).toLocaleString()} m³`;
+
+        }
+
+    }
+
+
+    const simulationEngine =
+        document.getElementById(
+            "simulationEngine"
+        );
+
+    if (simulationEngine) {
+
+        if (backendOnline) {
+
+            simulationEngine.textContent =
+                "PHYSICS LIVE";
+
+            simulationEngine.style.color =
+                "var(--green)";
+
+        } else {
+
+            simulationEngine.textContent =
+                "LOCAL MODE";
+
+            simulationEngine.style.color =
+                "var(--yellow)";
+
+        }
+
+    }
+
+
     /* ---------------------------------------------
        MAP
     --------------------------------------------- */
@@ -1075,7 +1175,20 @@ rainfallSlider.addEventListener(
             );
 
 
+        simulationSlider.value =
+            rainfall;
+
+
         updateDashboard();
+
+
+        clearTimeout(simulationDebounceTimer);
+
+        simulationDebounceTimer = setTimeout(function () {
+
+            requestSimulation(rainfall, simulationHour);
+
+        }, 200);
 
     }
 
@@ -1105,6 +1218,15 @@ simulationSlider.addEventListener(
 
         updateDashboard();
 
+
+        clearTimeout(simulationDebounceTimer);
+
+        simulationDebounceTimer = setTimeout(function () {
+
+            requestSimulation(rainfall, simulationHour);
+
+        }, 200);
+
     }
 
 );
@@ -1119,7 +1241,7 @@ runSimulationBtn.addEventListener(
 
     "click",
 
-    function () {
+    async function () {
 
         simulationHour++;
 
@@ -1142,7 +1264,24 @@ runSimulationBtn.addEventListener(
             );
 
 
-        updateDashboard();
+        const originalText = runSimulationBtn.textContent;
+
+        runSimulationBtn.textContent = "SIMULATING...";
+
+        runSimulationBtn.disabled = true;
+
+
+        try {
+
+            await requestSimulation(rainfall, simulationHour);
+
+        } finally {
+
+            runSimulationBtn.textContent = originalText;
+
+            runSimulationBtn.disabled = false;
+
+        }
 
 
         addSimulationAlert();
@@ -1161,7 +1300,7 @@ resetBtn.addEventListener(
 
     "click",
 
-    function () {
+    async function () {
 
         rainfall = 1;
 
@@ -1180,9 +1319,16 @@ resetBtn.addEventListener(
             "00";
 
 
+        latestSimulationData = null;
+
+
         updateDashboard();
 
+
         clearAlerts();
+
+
+        await requestSimulation(rainfall, simulationHour);
 
     }
 
@@ -1284,6 +1430,50 @@ function updateInspector(
         getRiskColor(
             risk
         );
+
+
+    const depthElement =
+        document.getElementById(
+            "inspectorDepth"
+        );
+
+    if (depthElement) {
+
+        if (typeof region.waterLevel === "number") {
+
+            depthElement.textContent =
+                `${(region.waterLevel * 100).toFixed(1)} cm`;
+
+        } else {
+
+            depthElement.textContent =
+                `${(rainfall * 1.6).toFixed(1)} cm`;
+
+        }
+
+    }
+
+
+    const scoreElement =
+        document.getElementById(
+            "inspectorScore"
+        );
+
+    if (scoreElement) {
+
+        if (typeof region.score === "number") {
+
+            scoreElement.textContent =
+                `${region.score} / 100`;
+
+        } else {
+
+            scoreElement.textContent =
+                `${Math.min(100, Math.round(rainfall * 3.2))} / 100`;
+
+        }
+
+    }
 
 }
 
@@ -1519,6 +1709,268 @@ function clearAlerts() {
 
 
 /* =====================================================
+   BACKEND API INTEGRATION
+===================================================== */
+
+
+async function checkBackendHealth() {
+
+    const statusElem =
+        document.getElementById(
+            "backendStatus"
+        );
+
+    const dotElem =
+        document.getElementById(
+            "backendDot"
+        );
+
+    const textElem =
+        document.getElementById(
+            "backendStatusText"
+        );
+
+    const engineElem =
+        document.getElementById(
+            "simulationEngine"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/health`
+            );
+
+        if (response.ok) {
+
+            backendOnline = true;
+
+            if (statusElem) {
+
+                statusElem.className =
+                    "status-value online";
+
+            }
+
+            if (dotElem) {
+
+                dotElem.className =
+                    "online-dot";
+
+            }
+
+            if (textElem) {
+
+                textElem.textContent =
+                    "ONLINE";
+
+            }
+
+            if (engineElem) {
+
+                engineElem.textContent =
+                    "PHYSICS LIVE";
+
+                engineElem.style.color =
+                    "var(--green)";
+
+            }
+
+            return true;
+
+        }
+
+    } catch (err) {
+
+        // Backend unreachable
+
+    }
+
+
+    backendOnline = false;
+
+    if (statusElem) {
+
+        statusElem.className =
+            "status-value offline";
+
+    }
+
+    if (dotElem) {
+
+        dotElem.className =
+            "online-dot offline-dot";
+
+    }
+
+    if (textElem) {
+
+        textElem.textContent =
+            "OFFLINE";
+
+    }
+
+    if (engineElem) {
+
+        engineElem.textContent =
+            "LOCAL MODE";
+
+        engineElem.style.color =
+            "var(--yellow)";
+
+    }
+
+    return false;
+
+}
+
+
+async function requestSimulation(
+    rainValue,
+    hourValue
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/simulate`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        rainfall: Number(rainValue),
+                        simulationHour: Number(hourValue)
+                    })
+                }
+            );
+
+        if (response.ok) {
+
+            const json =
+                await response.json();
+
+            if (
+                json.success &&
+                json.data
+            ) {
+
+                backendOnline = true;
+
+                latestSimulationData =
+                    json.data;
+
+
+                if (
+                    Array.isArray(
+                        latestSimulationData.regions
+                    )
+                ) {
+
+                    latestSimulationData.regions.forEach(
+                        function (resRegion) {
+
+                            const matched =
+                                regions.find(
+                                    function (r) {
+
+                                        return r.name.toLowerCase() === resRegion.name.toLowerCase() ||
+                                               (r.id && r.id.toLowerCase() === resRegion.id.toLowerCase());
+
+                                    }
+                                );
+
+                            if (matched) {
+
+                                matched.waterLevel =
+                                    resRegion.waterLevel;
+
+                                matched.risk =
+                                    resRegion.level
+                                        ? resRegion.level.toLowerCase()
+                                        : "safe";
+
+                                matched.score =
+                                    resRegion.score;
+
+                                matched.floodThreshold =
+                                    resRegion.floodThreshold;
+
+                                matched.riseRate =
+                                    resRegion.riseRate;
+
+                                matched.fillRatio =
+                                    resRegion.fillRatio;
+
+                                matched.hoursToFlood =
+                                    resRegion.hoursToFlood;
+
+                                matched.flooded =
+                                    resRegion.flooded;
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                updateDashboard();
+
+                updateMarkers();
+
+                updateAlerts();
+
+
+                if (selectedRegion) {
+
+                    updateInspector(
+                        selectedRegion.region,
+                        selectedRegion.index
+                    );
+
+                }
+
+                return;
+
+            }
+
+        }
+
+    } catch (err) {
+
+        console.warn(
+            "Backend simulation unreachable:",
+            err.message
+        );
+
+    }
+
+
+    updateDashboard();
+
+    updateMarkers();
+
+    updateAlerts();
+
+    if (selectedRegion) {
+
+        updateInspector(
+            selectedRegion.region,
+            selectedRegion.index
+        );
+
+    }
+
+}
+
+
+/* =====================================================
    SIMULATION CLOCK
 ===================================================== */
 
@@ -1552,6 +2004,12 @@ setInterval(
                     "0"
                 );
 
+
+            requestSimulation(
+                rainfall,
+                simulationHour
+            );
+
         }
 
     },
@@ -1570,6 +2028,30 @@ updateDashboard();
 
 
 clearAlerts();
+
+
+checkBackendHealth().then(
+
+    function (isOnline) {
+
+        if (isOnline) {
+
+            requestSimulation(
+                rainfall,
+                simulationHour
+            );
+
+        }
+
+    }
+
+);
+
+
+setInterval(
+    checkBackendHealth,
+    10000
+);
 
 
 /*

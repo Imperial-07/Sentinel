@@ -12,7 +12,7 @@ function App() {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/simulate', {
+      const response = await fetch('http://localhost:5001/api/simulate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -66,10 +66,14 @@ function App() {
       {results && (
         <div style={{ marginTop: '20px', padding: '15px', background: '#f4f4f4', borderRadius: '5px' }}>
           <h3>Results:</h3>
-          <p><strong>Water Storage:</strong> {results.waterStorage}</p>
-          <p><strong>Overflow:</strong> {results.overflow}</p>
-          <p><strong>Risk Index:</strong> {results.riskIndex}</p>
-          <p><strong>Risk Level:</strong> {results.riskLevel}</p>
+          <p><strong>River Level:</strong> {results.riverLevel != null ? `${results.riverLevel} m` : 'N/A'}</p>
+          <p><strong>Water Storage:</strong> {results.waterStorage != null ? `${results.waterStorage} m³` : 'N/A'}</p>
+          <p><strong>Overflow:</strong> {results.overflow != null ? `${results.overflow} m³` : 'N/A'}</p>
+          <p><strong>Risk Index:</strong> {results.riskIndex} / 100</p>
+          <p><strong>Risk Level:</strong> <span style={{ fontWeight: 'bold', color: results.riskLevel === 'CRITICAL' ? 'red' : results.riskLevel === 'WARNING' ? 'orange' : results.riskLevel === 'WATCH' ? '#b58900' : 'green' }}>{results.riskLevel}</span></p>
+          {results.stats && (
+            <p><strong>Active Alert Zones:</strong> {results.stats.activeZones} (Critical: {results.stats.criticalZones})</p>
+          )}
         </div>
       )}
     </div>
