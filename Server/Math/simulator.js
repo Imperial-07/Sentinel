@@ -210,6 +210,7 @@ function runSimulation(inputs = {}) {
       safeZones,
     },
     regions: enrichedRegions,
+    fluxes: currentState.fluxes || [],
     summary,
   };
 }

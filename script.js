@@ -339,6 +339,75 @@ function calculateRiverLevel() {
 
 
 /* =====================================================
+   MITHI RIVER & FLOOD INUNDATION LAYERS
+===================================================== */
+
+const mithiRiverChannel = [
+    [19.1270, 72.9100], // Powai Lake upstream feeder
+    [19.1197, 72.9051], // Powai weir
+    [19.1145, 72.8965], // Marol corridor
+    [19.1074, 72.8846], // Saki Naka junction
+    [19.0980, 72.8815], // Airport East culvert
+    [19.0880, 72.8835], // Bail Bazar
+    [19.0726, 72.8845], // Kurla West (low basin)
+    [19.0668, 72.8686], // BKC channel
+    [19.0550, 72.8580], // Kalanagar
+    [19.0435, 72.8510], // Dharavi inlet
+    [19.0410, 72.8493], // Dharavi
+    [19.0410, 72.8397], // Mahim Creek
+    [19.0380, 72.8310]  // Mahim Bay discharge into Arabian Sea
+];
+
+// 1. Broad Glow & Flood Corridor
+const riverGlowLayer = L.polyline(mithiRiverChannel, {
+    color: '#00e5ff',
+    weight: 7,
+    opacity: 0.75,
+    lineCap: 'round',
+    lineJoin: 'round',
+    className: 'river-glow-path'
+}).addTo(map);
+
+// 2. Dynamic Animated Flow Stream
+const riverFlowLayer = L.polyline(mithiRiverChannel, {
+    color: '#ffffff',
+    weight: 2.5,
+    opacity: 0.9,
+    lineCap: 'round',
+    lineJoin: 'round',
+    className: 'river-flow-path'
+}).addTo(map);
+
+// 3. Flood Inundation Hazard Zones around stations
+const inundationLayers = [];
+
+regions.forEach(function (region, index) {
+    const initialRisk = getRisk(rainfall, index);
+    const initialColor = getRiskColor(initialRisk);
+
+    const circle = L.circle([region.lat, region.lng], {
+        radius: 400,
+        color: initialColor,
+        fillColor: initialColor,
+        fillOpacity: 0.16,
+        weight: 1.5,
+        dashArray: '5, 5'
+    }).addTo(map);
+
+    circle.bindTooltip(`<strong>${region.name.toUpperCase()}</strong><br>Monitoring Station`, {
+        direction: 'top',
+        className: 'flood-tooltip'
+    });
+
+    circle.on('click', function () {
+        openRegionInspector(region, index);
+    });
+
+    inundationLayers.push(circle);
+});
+
+
+/* =====================================================
    MAP MARKERS
 ===================================================== */
 
@@ -447,12 +516,48 @@ regions.forEach(
 
 
 /* =====================================================
-   UPDATE MAP MARKERS
+   UPDATE MAP MARKERS & FLOOD VISUALIZATIONS
 ===================================================== */
 
 
 function updateMarkers() {
 
+    const overallRisk = calculateOverallRisk();
+    const riverLevel = calculateRiverLevel();
+
+    // 1. Update River Glow Layer (color, thickness, and glow effect)
+    let riverColor = '#00e5ff';
+    let baseWeight = 7;
+
+    if (overallRisk === 'CRITICAL') {
+        riverColor = '#ff4d5a';
+        baseWeight = 18;
+    } else if (overallRisk === 'WARNING') {
+        riverColor = '#ff8b3d';
+        baseWeight = 14;
+    } else if (overallRisk === 'WATCH') {
+        riverColor = '#f0c84b';
+        baseWeight = 10;
+    } else {
+        baseWeight = Math.min(10, 6 + Number(riverLevel) * 1.5);
+    }
+
+    riverGlowLayer.setStyle({
+        color: riverColor,
+        weight: baseWeight
+    });
+
+    // Speed up flow dash animation if heavy storm
+    const flowPathElem = riverFlowLayer.getElement();
+    if (flowPathElem) {
+        if (rainfall > 35 || overallRisk === 'WARNING' || overallRisk === 'CRITICAL') {
+            flowPathElem.classList.add('river-flow-fast');
+        } else {
+            flowPathElem.classList.remove('river-flow-fast');
+        }
+    }
+
+    // 2. Update Station Markers & Flood Inundation Zones
     regions.forEach(
 
         function (region, index) {
@@ -516,6 +621,74 @@ function updateMarkers() {
             markers[index].setIcon(
                 icon
             );
+
+            // Update Inundation Circle
+            if (inundationLayers[index]) {
+                let zoneRadius = 380;
+                let fillOpacity = 0.15;
+                let strokeOpacity = 0.45;
+
+                const depth = typeof region.waterLevel === 'number'
+                    ? region.waterLevel
+                    : (rainfall * 0.015);
+
+                if (risk === 'critical') {
+                    zoneRadius = Math.min(1800, 1100 + depth * 700);
+                    fillOpacity = 0.50;
+                    strokeOpacity = 0.95;
+                } else if (risk === 'warning') {
+                    zoneRadius = Math.min(1300, 750 + depth * 500);
+                    fillOpacity = 0.35;
+                    strokeOpacity = 0.80;
+                } else if (risk === 'watch') {
+                    zoneRadius = Math.min(900, 500 + depth * 350);
+                    fillOpacity = 0.25;
+                    strokeOpacity = 0.60;
+                } else {
+                    zoneRadius = Math.min(500, 350 + depth * 200);
+                }
+
+                inundationLayers[index].setRadius(zoneRadius);
+                inundationLayers[index].setStyle({
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: fillOpacity,
+                    opacity: strokeOpacity
+                });
+
+                // Update tooltip with real live metrics
+                const depthDisplay = typeof region.waterLevel === 'number'
+                    ? `${(region.waterLevel * 100).toFixed(1)} cm`
+                    : `${(rainfall * 1.6).toFixed(1)} cm`;
+
+                const scoreDisplay = typeof region.score === 'number'
+                    ? `${region.score} / 100`
+                    : `${Math.min(100, Math.round(rainfall * 3.2))} / 100`;
+
+                const floodTimeDisplay = region.hoursToFlood != null
+                    ? `<br>⚠️ Breach in: ${region.hoursToFlood} hrs`
+                    : '';
+
+                inundationLayers[index].setTooltipContent(`
+                    <div style="font-family: sans-serif; font-size: 11px; line-height: 1.4;">
+                        <strong style="color:${color}; font-size: 12px;">${region.name.toUpperCase()}</strong><br>
+                        Status: <span style="font-weight:700; color:${color};">${risk.toUpperCase()}</span><br>
+                        Water Depth: <strong>${depthDisplay}</strong><br>
+                        Risk Score: <strong>${scoreDisplay}</strong>
+                        ${floodTimeDisplay}
+                    </div>
+                `);
+
+                // Apply pulsing CSS class when elevated
+                const circleElem = inundationLayers[index].getElement();
+                if (circleElem) {
+                    if (risk === 'critical' || risk === 'warning') {
+                        circleElem.classList.add('flood-zone-pulsing');
+                    } else {
+                        circleElem.classList.remove('flood-zone-pulsing');
+                    }
+                }
+            }
 
         }
 
