@@ -328,6 +328,54 @@ const BASINS_DATA = {
     },
 
     /* ==========================================
+       HIMALAYAN & TRANSBOUNDARY BASINS (NEPAL)
+    ========================================== */
+    "bagmati-nepal": {
+        id: "bagmati-nepal",
+        name: "Bagmati River Basin (Nepal)",
+        category: "national_river",
+        center: [27.7000, 85.3200],
+        defaultZoom: 10,
+        riverChannel: [
+            [27.7650, 85.4250],
+            [27.7105, 85.3485],
+            [27.6880, 85.3020],
+            [27.6580, 85.2920],
+            [27.5620, 85.2280],
+            [27.1420, 85.4850]
+        ],
+        regions: [
+            { id: "sundarijal", name: "Sundarijal Shivapuri", lat: 27.7650, lng: 85.4250 },
+            { id: "pashupatinath", name: "Pashupatinath Gaurighat", lat: 27.7105, lng: 85.3485 },
+            { id: "balkhu", name: "Balkhu-Teku Floodplain", lat: 27.6880, lng: 85.3020 },
+            { id: "chobhar-gorge", name: "Chobhar Gorge Bottleneck", lat: 27.6580, lng: 85.2920 },
+            { id: "sisneri", name: "Sisneri Makwanpur", lat: 27.5620, lng: 85.2280 },
+            { id: "karmaiya", name: "Karmaiya Bagmati Barrage", lat: 27.1420, lng: 85.4850 }
+        ]
+    },
+    "koshi-nepal": {
+        id: "koshi-nepal",
+        name: "Koshi River Basin (Saptakoshi / Nepal)",
+        category: "national_river",
+        center: [26.8680, 87.1580],
+        defaultZoom: 8,
+        riverChannel: [
+            [27.7850, 85.9000],
+            [26.9320, 87.3320],
+            [26.8680, 87.1580],
+            [26.8150, 87.1400],
+            [26.5220, 86.9230]
+        ],
+        regions: [
+            { id: "barhabise", name: "Barhabise Bhotekoshi", lat: 27.7850, lng: 85.9000 },
+            { id: "mulghat", name: "Mulghat Tamor Confluence", lat: 26.9320, lng: 87.3320 },
+            { id: "chatara", name: "Chatara Saptakoshi Gorge", lat: 26.8680, lng: 87.1580 },
+            { id: "barahakshetra", name: "Barahakshetra Basin", lat: 26.8150, lng: 87.1400 },
+            { id: "koshi-barrage", name: "Koshi Megabarrage (56 Gates)", lat: 26.5220, lng: 86.9230 }
+        ]
+    },
+
+    /* ==========================================
        MAJOR STRATEGIC DAMS & RESERVOIRS (INDIA)
     ========================================== */
     "sardar-sarovar": {

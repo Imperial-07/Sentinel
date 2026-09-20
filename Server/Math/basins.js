@@ -547,6 +547,61 @@ const BASINS = {
   },
 
   /* =========================================================
+     HIMALAYAN & TRANSBOUNDARY BASINS (NEPAL)
+  ========================================================= */
+  'bagmati-nepal': {
+    id: 'bagmati-nepal',
+    name: 'Bagmati River Basin (Nepal)',
+    category: 'national_river',
+    description: 'Kathmandu Valley corridor draining through Chobhar Gorge to Rautahat Terai. Site of catastrophic September 2024 cloudburst floods.',
+    center: [27.7000, 85.3200], // Kathmandu Valley
+    defaultZoom: 10,
+    catchmentAreaKm2: 3750,
+    channelLengthKm: 597,
+    riverChannel: [
+      [27.7650, 85.4250], // Sundarijal headwaters (Shivapuri Hills)
+      [27.7105, 85.3485], // Pashupatinath Gaurighat
+      [27.6880, 85.3020], // Balkhu-Teku floodplain
+      [27.6580, 85.2920], // Chobhar Gorge bottleneck
+      [27.5620, 85.2280], // Sisneri (Makwanpur Kulekhani corridor)
+      [27.1420, 85.4850], // Karmaiya (Bagmati Barrage, Rautahat/Sarlahi)
+    ],
+    regions: [
+      { id: 'sundarijal', name: 'Sundarijal Shivapuri', lat: 27.7650, lng: 85.4250, areaKm2: 25.0, elevation: 1450, waterLevel: 0.60, drainageCapacity: 28, infiltrationRate: 6.0, floodThreshold: 2.0, surchargeDepth: 1.4, neighbors: [{ id: 'pashupatinath', width: 45, length: 11000, roughness: 0.040 }] },
+      { id: 'pashupatinath', name: 'Pashupatinath Gaurighat', lat: 27.7105, lng: 85.3485, areaKm2: 32.0, elevation: 1310, waterLevel: 0.90, drainageCapacity: 24, infiltrationRate: 4.5, floodThreshold: 2.5, surchargeDepth: 1.7, neighbors: [{ id: 'balkhu', width: 65, length: 7500, roughness: 0.038 }] },
+      { id: 'balkhu', name: 'Balkhu-Teku Floodplain', lat: 27.6880, lng: 85.3020, areaKm2: 28.0, elevation: 1285, waterLevel: 1.40, drainageCapacity: 20, infiltrationRate: 3.5, floodThreshold: 2.9, surchargeDepth: 2.0, neighbors: [{ id: 'chobhar-gorge', width: 35, length: 4500, roughness: 0.042 }] },
+      { id: 'chobhar-gorge', name: 'Chobhar Gorge Bottleneck', lat: 27.6580, lng: 85.2920, areaKm2: 22.0, elevation: 1260, waterLevel: 1.80, drainageCapacity: 18, infiltrationRate: 3.0, floodThreshold: 3.6, surchargeDepth: 2.5, neighbors: [{ id: 'sisneri', width: 50, length: 18000, roughness: 0.045 }] },
+      { id: 'sisneri', name: 'Sisneri Makwanpur', lat: 27.5620, lng: 85.2280, areaKm2: 45.0, elevation: 980, waterLevel: 1.60, drainageCapacity: 22, infiltrationRate: 4.0, floodThreshold: 3.6, surchargeDepth: 2.5, neighbors: [{ id: 'karmaiya', width: 140, length: 55000, roughness: 0.032 }] },
+      { id: 'karmaiya', name: 'Karmaiya Bagmati Barrage', lat: 27.1420, lng: 85.4850, areaKm2: 85.0, elevation: 115, waterLevel: 2.40, drainageCapacity: 45, infiltrationRate: 3.0, floodThreshold: 5.5, surchargeDepth: 3.8, neighbors: [] },
+    ],
+  },
+
+  'koshi-nepal': {
+    id: 'koshi-nepal',
+    name: 'Koshi River Basin (Saptakoshi / Nepal)',
+    category: 'national_river',
+    description: 'Mighty Himalayan transboundary basin draining Everest & Kanchenjunga into Saptakoshi and Bhimnagar Barrage.',
+    center: [26.8680, 87.1580], // Chatara / Dharan corridor
+    defaultZoom: 8,
+    catchmentAreaKm2: 74500,
+    channelLengthKm: 729,
+    riverChannel: [
+      [27.7850, 85.9000], // Barhabise Bhotekoshi
+      [26.9320, 87.3320], // Mulghat Tamor
+      [26.8680, 87.1580], // Chatara Saptakoshi Gorge
+      [26.8150, 87.1400], // Barahakshetra Basin
+      [26.5220, 86.9230], // Koshi Megabarrage (Nepal-Bihar border)
+    ],
+    regions: [
+      { id: 'barhabise', name: 'Barhabise Bhotekoshi', lat: 27.7850, lng: 85.9000, areaKm2: 35.0, elevation: 820, waterLevel: 1.20, drainageCapacity: 28, infiltrationRate: 5.5, floodThreshold: 3.2, surchargeDepth: 2.2, neighbors: [{ id: 'chatara', width: 250, length: 140000, roughness: 0.036 }] },
+      { id: 'mulghat', name: 'Mulghat Tamor Confluence', lat: 26.9320, lng: 87.3320, areaKm2: 45.0, elevation: 280, waterLevel: 1.80, drainageCapacity: 26, infiltrationRate: 4.5, floodThreshold: 4.2, surchargeDepth: 2.9, neighbors: [{ id: 'chatara', width: 320, length: 22000, roughness: 0.032 }] },
+      { id: 'chatara', name: 'Chatara Saptakoshi Gorge', lat: 26.8680, lng: 87.1580, areaKm2: 75.0, elevation: 140, waterLevel: 2.60, drainageCapacity: 24, infiltrationRate: 3.5, floodThreshold: 5.4, surchargeDepth: 3.8, neighbors: [{ id: 'barahakshetra', width: 650, length: 12000, roughness: 0.028 }] },
+      { id: 'barahakshetra', name: 'Barahakshetra Basin', lat: 26.8150, lng: 87.1400, areaKm2: 85.0, elevation: 110, waterLevel: 2.80, drainageCapacity: 22, infiltrationRate: 3.0, floodThreshold: 5.8, surchargeDepth: 4.0, neighbors: [{ id: 'koshi-barrage', width: 950, length: 36000, roughness: 0.026 }] },
+      { id: 'koshi-barrage', name: 'Koshi Megabarrage (56 Gates)', lat: 26.5220, lng: 86.9230, areaKm2: 120.0, elevation: 65, waterLevel: 3.20, drainageCapacity: 65, infiltrationRate: 2.5, floodThreshold: 7.6, surchargeDepth: 5.4, neighbors: [] },
+    ],
+  },
+
+  /* =========================================================
      MAJOR STRATEGIC DAMS & RESERVOIRS (INDIA)
   ========================================================= */
   'sardar-sarovar': {
